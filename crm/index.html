@@ -1,0 +1,1344 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM Clientes - Heineken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../stylebase.css" />
+    <link rel="stylesheet" href="crmstyle.css" />
+    <style>
+      .mn {
+        overflow: hidden;
+        padding: var(--sp3) var(--sp5);
+        gap: var(--sp2);
+      }
+
+      .crm-shell {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp2);
+        min-height: 0;
+        flex: 1;
+      }
+
+      .crm-toolbar {
+        background: var(--su);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: var(--rlg);
+        box-shadow: var(--shsm);
+        padding: var(--sp3) var(--sp4);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp3);
+        flex-wrap: wrap;
+      }
+
+      .search-wrap {
+        display: flex;
+        align-items: center;
+        gap: var(--sp2);
+        flex: 1;
+        min-width: 280px;
+      }
+
+      .search-box {
+        position: relative;
+        flex: 1;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 0.7rem 0.8rem 0.7rem 2.4rem;
+        border-radius: var(--rmd);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: var(--bg);
+        font: inherit;
+      }
+
+      .search-box svg {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--tm);
+      }
+
+      .search-tag {
+        padding: 0.55rem 0.8rem;
+        border-radius: var(--rfl);
+        background: rgba(0, 114, 42, 0.08);
+        color: var(--g);
+        font-size: var(--txs);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .crm-meta {
+        display: flex;
+        gap: var(--sp3);
+        flex-wrap: wrap;
+        font-size: var(--txs);
+        color: var(--tm);
+      }
+
+      .crm-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        min-height: 0;
+        flex: 1;
+      }
+
+      .crm-card {
+        background: var(--su);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: var(--rlg);
+        box-shadow: var(--shsm);
+        overflow: hidden;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .crm-card-head {
+        padding: var(--sp3) var(--sp4);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp3);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        flex-wrap: wrap;
+      }
+
+      .crm-card-head h2 {
+        font-size: var(--tbs);
+        color: var(--t);
+        margin: 0;
+      }
+
+      .crm-card-head p {
+        color: var(--tm);
+        font-size: var(--txs);
+        margin: 0.2rem 0 0;
+      }
+
+      .list-table-wrap {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .client-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .client-table thead tr {
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      .client-table th,
+      .client-table td {
+        padding: 0.7rem 0.75rem;
+        white-space: nowrap;
+      }
+
+      .client-table td:last-child,
+      .client-table th:last-child {
+        text-align: center;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.2rem 0.55rem;
+        border-radius: var(--rfl);
+        font-size: var(--txs);
+        font-weight: 700;
+      }
+
+      .status-ok {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .status-warn {
+        background: #fff3e0;
+        color: #e65100;
+      }
+
+      .row-actions {
+        display: inline-flex;
+        gap: 0.35rem;
+        justify-content: center;
+      }
+
+      .icon-btn {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: var(--su);
+        color: var(--tm);
+      }
+
+      .icon-btn:hover {
+        background: rgba(0, 114, 42, 0.06);
+        color: var(--g);
+      }
+
+      .icon-btn.delete:hover {
+        background: rgba(198, 40, 40, 0.08);
+        color: #c62828;
+      }
+
+      .pagination-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp3);
+        padding: var(--sp3) var(--sp4);
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        flex-wrap: wrap;
+      }
+
+      .pagination-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex-wrap: wrap;
+      }
+
+      .page-btn {
+        min-width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: var(--su);
+        color: var(--t);
+        font-size: var(--txs);
+      }
+
+      .page-btn.active {
+        background: var(--g);
+        border-color: var(--g);
+        color: var(--w);
+      }
+
+      .page-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .page-summary {
+        font-size: var(--txs);
+        color: var(--tm);
+      }
+
+      .modal-form {
+        width: min(1100px, calc(100vw - 2rem));
+        max-height: calc(100dvh - 2rem);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .modal-form .modal-body {
+        overflow: auto;
+        padding: var(--sp4);
+      }
+
+      .mini-step {
+        display: flex;
+        gap: var(--sp2);
+        flex-wrap: wrap;
+        margin-bottom: var(--sp3);
+      }
+
+      .mini-step span {
+        padding: 0.35rem 0.6rem;
+        border-radius: var(--rfl);
+        background: rgba(0, 0, 0, 0.05);
+        color: var(--tm);
+        font-size: var(--txs);
+        font-weight: 700;
+      }
+
+      .mini-step .active {
+        background: var(--g);
+        color: var(--w);
+      }
+
+      .modal-form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--sp2);
+      }
+
+      .modal-form .form-group.full {
+        grid-column: 1 / -1;
+      }
+
+      .client-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--sp2);
+        padding: var(--sp3) var(--sp4) var(--sp4);
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .client-modal-footer .btn {
+        min-width: 140px;
+      }
+
+      .summary-box {
+        background: rgba(0, 114, 42, 0.05);
+        border-radius: var(--rmd);
+        padding: var(--sp3);
+        display: grid;
+        gap: var(--sp2);
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--sp3);
+        border-bottom: 1px solid rgba(0, 114, 42, 0.08);
+        padding-bottom: 0.45rem;
+      }
+
+      .summary-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .summary-row strong {
+        color: var(--tm);
+      }
+
+      .empty-state {
+        padding: var(--sp6);
+        text-align: center;
+        color: var(--tm);
+      }
+
+      .empty-state h3 {
+        margin: 0 0 0.35rem;
+        color: var(--t);
+      }
+
+      @media (max-width: 1100px) {
+        .modal-form-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          overflow: auto;
+        }
+
+        .lay,
+        .mn {
+          overflow: auto;
+        }
+
+        .modal-form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .client-modal-footer,
+        .pagination-bar,
+        .crm-card-head,
+        .crm-toolbar {
+          padding-left: var(--sp3);
+          padding-right: var(--sp3);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hd">
+      <a class="hd-logo" href="#">
+        <img class="hd-logo-mark" src="../logo.png" alt="Heineken" />
+        <span class="hd-logo-t">Heineken ERP</span>
+      </a>
+      <div class="hd-r">
+        <button class="hd-nb" aria-label="Notificaciones">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="nd"></span>
+        </button>
+        <button class="hd-usr">
+          <div class="hd-av">JR</div>
+          <div style="text-align: left">
+            <div style="font-size: var(--txs); font-weight: 600">
+              Juan Ramírez
+            </div>
+            <div style="font-size: 10px; opacity: 0.7">Administrador</div>
+          </div>
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="lay">
+      <aside class="sb">
+        <span class="sb-lbl">Módulos</span>
+        <button class="ni" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 4h6v6H4z" />
+            <path d="M14 4h6v6h-6z" />
+            <path d="M4 14h6v6H4z" />
+          </svg>
+          Marketing
+        </button>
+        <button class="ni a" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          Ventas
+        </button>
+        <button class="ni" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+          CRM
+        </button>
+      </aside>
+
+      <main class="mn">
+        <div class="ph">
+          <div>
+            <h1>Clientes CRM</h1>
+            <p>
+              Listado de clientes vinculados a Heineken, con búsqueda y control
+              visual de registros
+            </p>
+          </div>
+        </div>
+
+        <div class="crm-shell">
+          <div class="crm-toolbar">
+            <div class="search-wrap">
+              <div class="search-box">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  id="searchInput"
+                  type="text"
+                  placeholder="Buscar por nombre o RUC"
+                  oninput="filterClients()"
+                />
+              </div>
+              <span class="search-tag">Nombre / RUC</span>
+            </div>
+            <button class="btn bp" onclick="openClientModal()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Registrar Cliente
+            </button>
+          </div>
+
+          <div class="crm-card">
+            <div class="crm-card-head">
+              <div>
+                <h2>Listado de clientes</h2>
+                <p id="resultsInfo">
+                  10 clientes en la primera hoja, paginación simulada 10 x 100
+                  páginas
+                </p>
+              </div>
+              <div class="crm-meta">
+                <span>10 por página</span>
+                <span>100 páginas</span>
+                <span id="showingCount">Mostrando 10 de 10</span>
+              </div>
+            </div>
+
+            <div class="list-table-wrap">
+              <table class="client-table">
+                <thead>
+                  <tr>
+                    <th>RUC</th>
+                    <th>Razón social</th>
+                    <th>Nombre comercial</th>
+                    <th>Tipo</th>
+                    <th>Contacto</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="clientTableBody"></tbody>
+              </table>
+
+              <div id="emptyState" class="empty-state" style="display: none">
+                <h3>Sin resultados</h3>
+                <p>No hay clientes que coincidan con la búsqueda.</p>
+              </div>
+            </div>
+
+            <div class="pagination-bar">
+              <div class="pagination-group">
+                <button class="page-btn" id="prevBtn" onclick="changePage(-1)">
+                  ‹
+                </button>
+                <button
+                  class="page-btn active"
+                  data-page="1"
+                  onclick="goToPage(1)"
+                >
+                  1
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="2"
+                  onclick="goToPage(2)"
+                  disabled
+                >
+                  2
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="3"
+                  onclick="goToPage(3)"
+                  disabled
+                >
+                  3
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="4"
+                  onclick="goToPage(4)"
+                  disabled
+                >
+                  4
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="5"
+                  onclick="goToPage(5)"
+                  disabled
+                >
+                  5
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="6"
+                  onclick="goToPage(6)"
+                  disabled
+                >
+                  6
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="7"
+                  onclick="goToPage(7)"
+                  disabled
+                >
+                  7
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="8"
+                  onclick="goToPage(8)"
+                  disabled
+                >
+                  8
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="9"
+                  onclick="goToPage(9)"
+                  disabled
+                >
+                  9
+                </button>
+                <button
+                  class="page-btn"
+                  data-page="10"
+                  onclick="goToPage(10)"
+                  disabled
+                >
+                  10
+                </button>
+                <button
+                  class="page-btn"
+                  id="nextBtn"
+                  onclick="changePage(1)"
+                  disabled
+                >
+                  ›
+                </button>
+              </div>
+              <div class="page-summary">Hoja 1 de 100</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="clientModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-form">
+        <div class="modal-header">
+          <h2 id="modalTitle">Registrar Cliente</h2>
+          <button class="modal-close" onclick="closeClientModal()">
+            &times;
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mini-step">
+            <span class="active">1. Ingresar datos</span>
+            <span>2. Validar</span>
+            <span>3. Sincronizar</span>
+          </div>
+
+          <form id="clientForm" class="form-container">
+            <div class="modal-form-grid">
+              <div class="form-group">
+                <label for="ruc">RUC <span class="required">*</span></label>
+                <input
+                  id="ruc"
+                  name="ruc"
+                  type="text"
+                  maxlength="11"
+                  placeholder="11 dígitos"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="razonSocial"
+                  >Razón Social <span class="required">*</span></label
+                >
+                <input
+                  id="razonSocial"
+                  name="razonSocial"
+                  type="text"
+                  placeholder="Empresa o bodega"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="nombreComercial">Nombre Comercial</label>
+                <input
+                  id="nombreComercial"
+                  name="nombreComercial"
+                  type="text"
+                  placeholder="Nombre comercial"
+                />
+              </div>
+              <div class="form-group">
+                <label for="tipoCliente"
+                  >Tipo de Cliente <span class="required">*</span></label
+                >
+                <select id="tipoCliente" name="tipoCliente" required>
+                  <option value="">Selecciona un tipo</option>
+                  <option value="empresa">Empresa</option>
+                  <option value="bodega">Bodega</option>
+                  <option value="distribuidor">Distribuidor</option>
+                  <option value="mayorista">Mayorista</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="contacto"
+                  >Persona de Contacto <span class="required">*</span></label
+                >
+                <input
+                  id="contacto"
+                  name="contacto"
+                  type="text"
+                  placeholder="Nombre completo"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="telefono"
+                  >Teléfono <span class="required">*</span></label
+                >
+                <input
+                  id="telefono"
+                  name="telefono"
+                  type="text"
+                  maxlength="9"
+                  placeholder="9 dígitos"
+                  required
+                />
+              </div>
+              <div class="form-group full">
+                <label for="correo"
+                  >Correo Electrónico <span class="required">*</span></label
+                >
+                <input
+                  id="correo"
+                  name="correo"
+                  type="email"
+                  placeholder="correo@cliente.pe"
+                  required
+                />
+              </div>
+              <div class="form-group full">
+                <label for="direccion"
+                  >Dirección <span class="required">*</span></label
+                >
+                <input
+                  id="direccion"
+                  name="direccion"
+                  type="text"
+                  placeholder="Dirección fiscal o comercial"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="distrito"
+                  >Distrito <span class="required">*</span></label
+                >
+                <input
+                  id="distrito"
+                  name="distrito"
+                  type="text"
+                  placeholder="Distrito"
+                  required
+                />
+              </div>
+              <div class="form-group full">
+                <label for="observaciones">Observaciones</label>
+                <textarea
+                  id="observaciones"
+                  name="observaciones"
+                  rows="2"
+                  placeholder="Notas adicionales"
+                ></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="client-modal-footer">
+          <button type="button" class="btn bs" onclick="closeClientModal()">
+            Cancelar
+          </button>
+          <button type="button" class="btn bp" onclick="validateAndProceed()">
+            Validar Datos
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="validationModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content validation-modal">
+        <div class="modal-header">
+          <h2>Validación de Cliente</h2>
+          <button class="modal-close" onclick="closeModal('validationModal')">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="validation-status">
+            <svg
+              class="check-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <p class="validation-title">Datos revisados correctamente</p>
+            <p class="validation-subtitle">Confirma el registro del cliente</p>
+          </div>
+          <div class="summary-box">
+            <div class="summary-row">
+              <strong>RUC</strong><span id="sumRuc">-</span>
+            </div>
+            <div class="summary-row">
+              <strong>Razón Social</strong><span id="sumRazonSocial">-</span>
+            </div>
+            <div class="summary-row">
+              <strong>Tipo</strong><span id="sumTipoCliente">-</span>
+            </div>
+            <div class="summary-row">
+              <strong>Contacto</strong><span id="sumContacto">-</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn bs"
+            onclick="closeModal('validationModal')"
+          >
+            Cancelar
+          </button>
+          <button type="button" class="btn bp" onclick="confirmRegister()">
+            Registrar Cliente
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="syncModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content sync-modal">
+        <div class="sync-header">
+          <div class="sync-animation"><div class="sync-spinner"></div></div>
+          <h2>Sincronizando</h2>
+        </div>
+        <p class="sync-text">Guardando el cliente en la base de datos...</p>
+        <div class="sync-progress"><div class="progress-bar"></div></div>
+      </div>
+    </div>
+
+    <div id="successNotification" class="notification success-notification">
+      <div class="notification-content">
+        <svg
+          class="notification-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <div class="notification-text">
+          <h4>Éxito</h4>
+          <p id="successMessage">Cliente guardado correctamente</p>
+        </div>
+        <button class="notification-close" onclick="closeNotification()">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <div id="errorNotification" class="notification error-notification">
+      <div class="notification-content">
+        <svg
+          class="notification-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div class="notification-text">
+          <h4>Error</h4>
+          <p id="errorMessage">Revisa los campos obligatorios</p>
+        </div>
+        <button class="notification-close" onclick="closeErrorNotification()">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const PAGE_SIZE = 10;
+      const TOTAL_PAGES = 100;
+      let currentPage = 1;
+      let editingId = null;
+      let clients = [
+        {
+          id: 1,
+          ruc: "20500111222",
+          razonSocial: "BODEGA SAN MIGUEL S.A.C.",
+          nombreComercial: "Bodega San Miguel",
+          tipoCliente: "Bodega",
+          contacto: "María Torres",
+          telefono: "987123456",
+          correo: "contacto@bodegasm.pe",
+          direccion: "Av. Los Alisos 145",
+          distrito: "San Miguel",
+          observaciones: "Cliente de reposición semanal",
+          estado: "Activo",
+        },
+        {
+          id: 2,
+          ruc: "20611444777",
+          razonSocial: "DISTRIBUCIONES DEL SUR S.R.L.",
+          nombreComercial: "Distribuciones del Sur",
+          tipoCliente: "Distribuidor",
+          contacto: "José Rojas",
+          telefono: "965444777",
+          correo: "ventas@delsur.pe",
+          direccion: "Calle 12 Mz. F Lt. 3",
+          distrito: "Villa El Salvador",
+          observaciones: "Cobertura zona sur",
+          estado: "Activo",
+        },
+        {
+          id: 3,
+          ruc: "20477888991",
+          razonSocial: "MINIMARKET EL AHORRO E.I.R.L.",
+          nombreComercial: "El Ahorro",
+          tipoCliente: "Bodega",
+          contacto: "Paola Herrera",
+          telefono: "998887766",
+          correo: "admin@elahorro.pe",
+          direccion: "Jr. Comercio 248",
+          distrito: "Ate",
+          observaciones: "Pedido mixto",
+          estado: "Activo",
+        },
+        {
+          id: 4,
+          ruc: "20133555990",
+          razonSocial: "SUPERMERCADOS COSTA VERDE S.A.",
+          nombreComercial: "Costa Verde",
+          tipoCliente: "Empresa",
+          contacto: "Luis Medina",
+          telefono: "944556677",
+          correo: "lmedina@costaverde.pe",
+          direccion: "Av. Marina 2200",
+          distrito: "Miraflores",
+          observaciones: "Cuentas corporativas",
+          estado: "Activo",
+        },
+        {
+          id: 5,
+          ruc: "20566778111",
+          razonSocial: "ABARROTES LA FLOR S.A.C.",
+          nombreComercial: "La Flor",
+          tipoCliente: "Mayorista",
+          contacto: "Ana Campos",
+          telefono: "976543210",
+          correo: "ana@laflor.pe",
+          direccion: "Mercado Central Puesto 18",
+          distrito: "Cercado de Lima",
+          observaciones: "Alta rotación",
+          estado: "Activo",
+        },
+        {
+          id: 6,
+          ruc: "20688999001",
+          razonSocial: "DISTRIBUIDORA NORTE EXPRESS S.A.C.",
+          nombreComercial: "Norte Express",
+          tipoCliente: "Distribuidor",
+          contacto: "Renato Paredes",
+          telefono: "911223344",
+          correo: "rparedes@norteexpress.pe",
+          direccion: "Panamericana Norte Km. 24",
+          distrito: "Los Olivos",
+          observaciones: "Cobertura Lima Norte",
+          estado: "Activo",
+        },
+        {
+          id: 7,
+          ruc: "20544221133",
+          razonSocial: "BODEGA EL PORTAL ANDINO E.I.R.L.",
+          nombreComercial: "Portal Andino",
+          tipoCliente: "Bodega",
+          contacto: "Carmen Silva",
+          telefono: "933221144",
+          correo: "carmen@portalandino.pe",
+          direccion: "Av. Principal 550",
+          distrito: "Comas",
+          observaciones: "Pedidos de fin de semana",
+          estado: "Activo",
+        },
+        {
+          id: 8,
+          ruc: "20199887766",
+          razonSocial: "ALMACENES DEL PACÍFICO S.A.C.",
+          nombreComercial: "Pacífico",
+          tipoCliente: "Empresa",
+          contacto: "Andrés León",
+          telefono: "922334455",
+          correo: "aleon@pacifico.pe",
+          direccion: "Vía de Evitamiento 880",
+          distrito: "San Luis",
+          observaciones: "Centro de distribución",
+          estado: "Activo",
+        },
+        {
+          id: 9,
+          ruc: "20555666778",
+          razonSocial: "MAYORISTA LOS PINOS S.A.C.",
+          nombreComercial: "Los Pinos",
+          tipoCliente: "Mayorista",
+          contacto: "Gisela Vega",
+          telefono: "988776655",
+          correo: "gvega@lospinos.pe",
+          direccion: "Av. Túpac Amaru 7800",
+          distrito: "Comas",
+          observaciones: "Compra por volumen",
+          estado: "Activo",
+        },
+        {
+          id: 10,
+          ruc: "20622334455",
+          razonSocial: "BODEGAS UNIDAS DEL CALLAO S.A.C.",
+          nombreComercial: "Bodegas Unidas",
+          tipoCliente: "Bodega",
+          contacto: "Diego Fernández",
+          telefono: "978889900",
+          correo: "diego@bodegasunidas.pe",
+          direccion: "Av. Faucett 400",
+          distrito: "Callao",
+          observaciones: "Cliente de ruta costera",
+          estado: "Activo",
+        },
+      ];
+
+      let filteredClients = [...clients];
+
+      function act(btn) {
+        document
+          .querySelectorAll(".ni")
+          .forEach((item) => item.classList.remove("a", "at"));
+        btn.classList.add("a");
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("clientTableBody");
+        const emptyState = document.getElementById("emptyState");
+        const info = document.getElementById("showingCount");
+
+        const pageItems = filteredClients.slice(0, PAGE_SIZE);
+
+        tbody.innerHTML = pageItems
+          .map(
+            (client) => `
+						<tr>
+							<td>${client.ruc}</td>
+							<td>${client.razonSocial}</td>
+							<td>${client.nombreComercial}</td>
+							<td>${client.tipoCliente}</td>
+							<td>${client.contacto}</td>
+							<td>${client.telefono}</td>
+							<td><span class="status-pill status-ok">${client.estado}</span></td>
+							<td>
+								<div class="row-actions">
+									<button class="icon-btn" title="Editar" onclick="editClient(${client.id})">
+										<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<path d="M12 20h9" />
+											<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+										</svg>
+									</button>
+									<button class="icon-btn delete" title="Eliminar" onclick="deleteClient(${client.id})">
+										<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<line x1="18" y1="6" x2="6" y2="18" />
+											<line x1="6" y1="6" x2="18" y2="18" />
+										</svg>
+									</button>
+								</div>
+							</td>
+						</tr>
+					`,
+          )
+          .join("");
+
+        emptyState.style.display = pageItems.length ? "none" : "block";
+        info.textContent = `Mostrando ${pageItems.length} de ${filteredClients.length || 0}`;
+      }
+
+      function filterClients() {
+        const query = document
+          .getElementById("searchInput")
+          .value.trim()
+          .toLowerCase();
+        filteredClients = clients.filter(
+          (client) =>
+            client.ruc.includes(query) ||
+            client.razonSocial.toLowerCase().includes(query) ||
+            client.nombreComercial.toLowerCase().includes(query),
+        );
+        renderTable();
+      }
+
+      function goToPage(page) {
+        currentPage = page;
+      }
+
+      function changePage(direction) {
+        currentPage = Math.max(
+          1,
+          Math.min(TOTAL_PAGES, currentPage + direction),
+        );
+      }
+
+      function openClientModal(clientId = null) {
+        editingId = clientId;
+        const modal = document.getElementById("clientModal");
+        const form = document.getElementById("clientForm");
+        document.getElementById("modalTitle").textContent = clientId
+          ? "Registrar Cliente"
+          : "Registrar Cliente";
+
+        form.reset();
+        if (clientId !== null) {
+          const client = clients.find((item) => item.id === clientId);
+          if (client) {
+            document.getElementById("ruc").value = client.ruc;
+            document.getElementById("razonSocial").value = client.razonSocial;
+            document.getElementById("nombreComercial").value =
+              client.nombreComercial;
+            document.getElementById("tipoCliente").value =
+              client.tipoCliente.toLowerCase();
+            document.getElementById("contacto").value = client.contacto;
+            document.getElementById("telefono").value = client.telefono;
+            document.getElementById("correo").value = client.correo;
+            document.getElementById("direccion").value = client.direccion;
+            document.getElementById("distrito").value = client.distrito;
+            document.getElementById("observaciones").value =
+              client.observaciones;
+          }
+        }
+
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeClientModal() {
+        document.getElementById("clientModal").classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      function openModal(id) {
+        document.getElementById(id).classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      function validateForm() {
+        const requiredFields = [
+          "ruc",
+          "razonSocial",
+          "tipoCliente",
+          "contacto",
+          "telefono",
+          "correo",
+          "direccion",
+          "distrito",
+        ];
+        const errors = [];
+
+        requiredFields.forEach((field) => {
+          const value = document.getElementById(field).value.trim();
+          if (!value) errors.push(field);
+        });
+
+        const ruc = document.getElementById("ruc").value.trim();
+        const telefono = document.getElementById("telefono").value.trim();
+        const correo = document.getElementById("correo").value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (ruc.length !== 11 || /\D/.test(ruc)) errors.push("ruc");
+        if (telefono.length !== 9 || /\D/.test(telefono))
+          errors.push("telefono");
+        if (!emailRegex.test(correo)) errors.push("correo");
+
+        return errors.length === 0;
+      }
+
+      function validateAndProceed() {
+        if (!validateForm()) {
+          showErrorNotification(
+            "Completa todos los campos obligatorios correctamente",
+          );
+          return;
+        }
+
+        document.getElementById("sumRuc").textContent =
+          document.getElementById("ruc").value;
+        document.getElementById("sumRazonSocial").textContent =
+          document.getElementById("razonSocial").value;
+        document.getElementById("sumTipoCliente").textContent =
+          document.getElementById("tipoCliente").selectedOptions[0].textContent;
+        document.getElementById("sumContacto").textContent =
+          document.getElementById("contacto").value;
+
+        openModal("validationModal");
+      }
+
+      function confirmRegister() {
+        closeModal("validationModal");
+        openModal("syncModal");
+
+        setTimeout(() => {
+          closeModal("syncModal");
+
+          const record = {
+            id: editingId || Date.now(),
+            ruc: document.getElementById("ruc").value.trim(),
+            razonSocial: document.getElementById("razonSocial").value.trim(),
+            nombreComercial: document
+              .getElementById("nombreComercial")
+              .value.trim(),
+            tipoCliente:
+              document.getElementById("tipoCliente").selectedOptions[0]
+                .textContent,
+            contacto: document.getElementById("contacto").value.trim(),
+            telefono: document.getElementById("telefono").value.trim(),
+            correo: document.getElementById("correo").value.trim(),
+            direccion: document.getElementById("direccion").value.trim(),
+            distrito: document.getElementById("distrito").value.trim(),
+            observaciones: document
+              .getElementById("observaciones")
+              .value.trim(),
+            estado: "Activo",
+          };
+
+          if (editingId !== null) {
+            clients = clients.map((client) =>
+              client.id === editingId ? record : client,
+            );
+          } else {
+            clients.unshift(record);
+            clients = clients.slice(0, 10);
+          }
+
+          filteredClients = [...clients];
+          renderTable();
+          closeClientModal();
+          showSuccessNotification("Cliente guardado correctamente");
+          editingId = null;
+        }, 1800);
+      }
+
+      function editClient(id) {
+        openClientModal(id);
+      }
+
+      function deleteClient(id) {
+        const client = clients.find((item) => item.id === id);
+        if (!client) return;
+
+        const ok = confirm(`¿Eliminar a ${client.razonSocial}?`);
+        if (!ok) return;
+
+        clients = clients.filter((item) => item.id !== id);
+        filteredClients = clients.filter((clientItem) => {
+          const query = document
+            .getElementById("searchInput")
+            .value.trim()
+            .toLowerCase();
+          return (
+            clientItem.ruc.includes(query) ||
+            clientItem.razonSocial.toLowerCase().includes(query) ||
+            clientItem.nombreComercial.toLowerCase().includes(query)
+          );
+        });
+
+        renderTable();
+        showSuccessNotification("Cliente eliminado de la vista");
+      }
+
+      function showSuccessNotification(message) {
+        document.getElementById("successMessage").textContent = message;
+        document.getElementById("successNotification").classList.add("show");
+      }
+
+      function closeNotification() {
+        document.getElementById("successNotification").classList.remove("show");
+      }
+
+      function showErrorNotification(message) {
+        document.getElementById("errorMessage").textContent = message;
+        const notification = document.getElementById("errorNotification");
+        notification.classList.add("show");
+        setTimeout(() => notification.classList.remove("show"), 3000);
+      }
+
+      function closeErrorNotification() {
+        document.getElementById("errorNotification").classList.remove("show");
+      }
+
+      document.addEventListener("click", (event) => {
+        if (event.target.classList.contains("modal-overlay")) {
+          event.target.parentElement.classList.remove("active");
+          document.body.style.overflow = "auto";
+        }
+      });
+
+      document.getElementById("ruc").addEventListener("input", (event) => {
+        event.target.value = event.target.value.replace(/\D/g, "");
+      });
+
+      document.getElementById("telefono").addEventListener("input", (event) => {
+        event.target.value = event.target.value.replace(/\D/g, "");
+      });
+
+      renderTable();
+    </script>
+  </body>
+</html>
