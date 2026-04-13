@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buzón de Peticiones - Marketing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../stylebase.css" />
+    <link rel="stylesheet" href="crmstyle.css" />
+    <style>
+      .mn {
+        padding: var(--sp3) var(--sp5);
+        gap: var(--sp2);
+        overflow: hidden;
+      }
+
+      .notice-layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: var(--sp3);
+        min-height: 0;
+        flex: 1;
+      }
+
+      .notice-panel,
+      .notice-detail {
+        background: var(--su);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: var(--rlg);
+        box-shadow: var(--shsm);
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .notice-head {
+        padding: var(--sp3) var(--sp4);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .notice-head h2 {
+        margin: 0;
+        font-size: var(--tbs);
+      }
+
+      .notice-head p {
+        margin: 0.2rem 0 0;
+        color: var(--tm);
+        font-size: var(--txs);
+      }
+
+      .notice-filters {
+        display: flex;
+        gap: var(--sp2);
+        flex-wrap: wrap;
+        padding: var(--sp3) var(--sp4) 0;
+      }
+
+      .notice-filters .btn {
+        padding: 0.35rem 0.65rem;
+      }
+
+      .notice-list {
+        padding: var(--sp3);
+        overflow: auto;
+        display: grid;
+        gap: var(--sp2);
+      }
+
+      .notice-item {
+        padding: var(--sp3);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: var(--rmd);
+        background: var(--bg);
+        cursor: pointer;
+        transition:
+          background var(--tr),
+          border-color var(--tr),
+          transform var(--tr);
+      }
+
+      .notice-item:hover,
+      .notice-item.active {
+        background: rgba(0, 114, 42, 0.05);
+        border-color: rgba(0, 114, 42, 0.18);
+        transform: translateY(-1px);
+      }
+
+      .notice-top {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--sp2);
+        align-items: flex-start;
+      }
+
+      .notice-title {
+        font-weight: 700;
+        color: var(--t);
+        font-size: var(--txs);
+      }
+
+      .notice-meta {
+        font-size: var(--txs);
+        color: var(--tm);
+        margin-top: 0.25rem;
+        line-height: 1.45;
+      }
+
+      .notice-desc {
+        margin-top: 0.45rem;
+        font-size: var(--txs);
+        color: var(--t);
+        line-height: 1.45;
+      }
+
+      .notice-detail-body {
+        padding: var(--sp4);
+        overflow: auto;
+        display: grid;
+        gap: var(--sp3);
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--sp2);
+      }
+
+      .detail-box {
+        background: rgba(0, 114, 42, 0.05);
+        border-radius: var(--rmd);
+        padding: var(--sp3);
+      }
+
+      .detail-box span {
+        display: block;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--tm);
+        margin-bottom: 0.15rem;
+      }
+
+      .detail-box strong {
+        color: var(--t);
+        font-size: var(--tsm);
+      }
+
+      .status-line {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: var(--rfl);
+        font-size: var(--txs);
+        font-weight: 700;
+      }
+
+      .status-line.new {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+
+      .status-line.done {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .timeline {
+        display: grid;
+        gap: var(--sp2);
+      }
+
+      .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--sp2);
+        padding: var(--sp2) 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .timeline-item:last-child {
+        border-bottom: none;
+      }
+
+      .timeline-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-top: 6px;
+        background: var(--g);
+        flex-shrink: 0;
+      }
+
+      .timeline-dot.done {
+        background: var(--tan);
+      }
+
+      .timeline-text {
+        font-size: var(--txs);
+        color: var(--t);
+        line-height: 1.45;
+      }
+
+      .timeline-text span {
+        color: var(--tm);
+        display: block;
+        margin-top: 2px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--sp2);
+        text-decoration: none;
+      }
+
+      @media (max-width: 1100px) {
+        .notice-layout,
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hd">
+      <a class="hd-logo" href="#">
+        <img class="hd-logo-mark" src="../logo.png" alt="Heineken" />
+        <span class="hd-logo-t">Heineken ERP</span>
+      </a>
+      <div class="hd-r">
+        <a class="btn bs back-link" href="procesamiento-información.html">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Volver al proceso
+        </a>
+      </div>
+    </header>
+
+    <div class="lay">
+      <aside class="sb">
+        <span class="sb-lbl">Módulos</span>
+        <button class="ni a" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 4h6v6H4z" />
+            <path d="M14 4h6v6h-6z" />
+            <path d="M4 14h6v6H4z" />
+          </svg>
+          Marketing
+        </button>
+        <button class="ni" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          Ventas
+        </button>
+        <button class="ni" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+          CRM
+        </button>
+      </aside>
+
+      <main class="mn">
+        <div class="ph">
+          <div>
+            <h1>Buzón de Peticiones</h1>
+            <p>
+              Solicitudes de marketing con estado de atención y seguimiento por
+              prioridad
+            </p>
+          </div>
+        </div>
+
+        <div class="notice-layout">
+          <section class="notice-panel">
+            <div class="notice-head">
+              <h2>Peticiones</h2>
+              <p>Atendidas y pendientes</p>
+            </div>
+            <div class="notice-filters">
+              <button class="btn bs" type="button" onclick="filterInbox('all')">
+                Todas
+              </button>
+              <button class="btn bs" type="button" onclick="filterInbox('new')">
+                Pendientes
+              </button>
+              <button
+                class="btn bs"
+                type="button"
+                onclick="filterInbox('done')"
+              >
+                Atendidas
+              </button>
+            </div>
+            <div class="notice-list" id="noticeList"></div>
+          </section>
+
+          <section class="notice-detail">
+            <div class="notice-head">
+              <h2 id="detailTitle">Selecciona una petición</h2>
+              <p id="detailSubtitle">
+                Aquí verás el estado, la última acción y el tipo de solicitud
+              </p>
+            </div>
+            <div class="notice-detail-body">
+              <div class="detail-grid" id="detailGrid">
+                <div class="detail-box">
+                  <span>Estado</span><strong>-</strong>
+                </div>
+                <div class="detail-box">
+                  <span>Descripción</span><strong>-</strong>
+                </div>
+                <div class="detail-box">
+                  <span>Prioridad</span><strong>-</strong>
+                </div>
+                <div class="detail-box">
+                  <span>Fecha</span><strong>-</strong>
+                </div>
+              </div>
+
+              <div class="stage-card">
+                <div class="stage-head">
+                  <h3>Seguimiento de atención</h3>
+                  <p>
+                    La pantalla muestra si la petición ya fue atendida o sigue
+                    pendiente
+                  </p>
+                </div>
+                <div class="stage-body">
+                  <div class="timeline" id="timelineBody"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const inbox = [
+        {
+          id: 1,
+          title: "Inactivos 60/90 días con potencial",
+          area: "Trade Marketing",
+          priority: "Alta",
+          date: "12 Abr 2026",
+          status: "Nueva",
+          summary:
+            "Solicita clientes sin recompra en 60/90 días por canal, zona y frecuencia histórica; excluye sin actividad relevante y prioriza clientes con historial o engagement previo.",
+          trace: [
+            {
+              text: "Petición recibida en buzón",
+              detail: "A la espera de atención del equipo",
+            },
+            { text: "No atendida aún", detail: "Pendiente de ejecución" },
+          ],
+        },
+        {
+          id: 2,
+          title: "Win-back canal tradicional",
+          area: "Brand Activation",
+          priority: "Media",
+          date: "12 Abr 2026",
+          status: "Atendida",
+          summary:
+            "Listado depurado por nivel de inactividad y potencial de reactivación para mensajes personalizados y promociones de retorno.",
+          trace: [
+            {
+              text: "Petición recibida en buzón",
+              detail: "Atendida por marketing",
+            },
+            {
+              text: "Petición ejecutada",
+              detail: "Reporte enviado al área solicitante",
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: "Reporte Horeca Lima Norte",
+          area: "Insights",
+          priority: "Alta",
+          date: "11 Abr 2026",
+          status: "Atendida",
+          summary:
+            "Corte Horeca con clientes que desaceleraron compra, segmentados por zona y ticket histórico para priorizar acciones comerciales.",
+          trace: [
+            {
+              text: "Petición recibida en buzón",
+              detail: "Atendida previamente",
+            },
+            {
+              text: "PDF entregado",
+              detail: "Archivo compartido con marketing",
+            },
+          ],
+        },
+        {
+          id: 4,
+          title: "Segmentación de distribuidores",
+          area: "Comercial",
+          priority: "Media",
+          date: "10 Abr 2026",
+          status: "Nueva",
+          summary:
+            "Segmentación técnica por volumen, canal y cobertura geográfica, destacando distribuidores con caída reciente y antecedente de alta actividad.",
+          trace: [
+            {
+              text: "Petición recibida en buzón",
+              detail: "Pendiente de procesamiento",
+            },
+            { text: "Sin atención", detail: "Se muestra como no atendida" },
+          ],
+        },
+      ];
+
+      let selectedId = 1;
+      let inboxFilter = "all";
+
+      function act(btn) {
+        document
+          .querySelectorAll(".ni")
+          .forEach((item) => item.classList.remove("a", "at"));
+        btn.classList.add("a");
+      }
+
+      function filterInbox(type) {
+        inboxFilter = type;
+        renderInbox();
+      }
+
+      function renderInbox() {
+        const list = document.getElementById("noticeList");
+        const filtered = inbox.filter(
+          (item) =>
+            inboxFilter === "all" ||
+            (inboxFilter === "new" && item.status === "Nueva") ||
+            (inboxFilter === "done" && item.status === "Atendida"),
+        );
+
+        list.innerHTML = filtered
+          .map(
+            (item) => `
+          <article class="notice-item ${selectedId === item.id ? "active" : ""}" onclick="selectNotice(${item.id})">
+            <div class="notice-top">
+              <div>
+                <div class="notice-title">${item.title}</div>
+                  <div class="notice-meta">${item.summary}</div>
+              </div>
+              <span class="status-line ${item.status === "Atendida" ? "done" : "new"}">${item.status}</span>
+            </div>
+              <div class="notice-desc" style="margin-top: .6rem;">Prioridad: ${item.priority} · ${item.date}</div>
+          </article>
+        `,
+          )
+          .join("");
+
+        if (!filtered.length) {
+          list.innerHTML =
+            '<div class="empty-state"><h3>Sin peticiones</h3><p>No hay solicitudes para este filtro.</p></div>';
+        }
+      }
+
+      function selectNotice(id) {
+        selectedId = id;
+        const notice = inbox.find((item) => item.id === id);
+        if (!notice) return;
+
+        document.getElementById("detailTitle").textContent = notice.title;
+        document.getElementById("detailSubtitle").textContent =
+          `${notice.status}`;
+        document.getElementById("detailGrid").innerHTML = `
+          <div class="detail-box"><span>Estado</span><strong>${notice.status}</strong></div>
+           <div class="detail-box"><span>Descripción</span><strong>${notice.summary}</strong></div>
+          <div class="detail-box"><span>Prioridad</span><strong>${notice.priority}</strong></div>
+          <div class="detail-box"><span>Fecha</span><strong>${notice.date}</strong></div>
+        `;
+        document.getElementById("timelineBody").innerHTML = notice.trace
+          .map(
+            (step) => `
+          <div class="timeline-item">
+            <div class="timeline-dot ${notice.status === "Atendida" ? "done" : ""}"></div>
+            <div class="timeline-text">${step.text}<span>${step.detail}</span></div>
+          </div>
+        `,
+          )
+          .join("");
+
+        renderInbox();
+      }
+
+      renderInbox();
+      selectNotice(1);
+    </script>
+  </body>
+</html>

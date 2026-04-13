@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reclamos Comerciales B2B</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../stylebase.css" />
+    <link rel="stylesheet" href="crmstyle.css" />
+  </head>
+  <body>
+    <header class="hd">
+      <a class="hd-logo" href="#">
+        <img class="hd-logo-mark" src="../logo.png" alt="Heineken" />
+        <span class="hd-logo-t">Heineken ERP</span>
+      </a>
+      <div class="hd-r">
+        <button class="hd-nb" aria-label="Notificaciones">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="nd"></span>
+        </button>
+        <button class="hd-usr">
+          <div class="hd-av">JR</div>
+          <div style="text-align: left">
+            <div style="font-size: var(--txs); font-weight: 600">
+              Juan Ramirez
+            </div>
+            <div style="font-size: 10px; opacity: 0.7">Administrador</div>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <div class="lay">
+      <aside class="sb" aria-label="Navegacion principal">
+        <span class="sb-lbl">Modulos</span>
+        <button class="ni a" onclick="act(this)">Marketing</button>
+        <button class="ni" onclick="act(this)">Ventas</button>
+        <button class="ni" onclick="act(this)">CRM</button>
+      </aside>
+
+      <main class="mn">
+        <div class="ph">
+          <div>
+            <h1>Lista de Reclamos Comerciales</h1>
+            <p>
+              Gestion B2B para clientes comerciales: bodegas, licorerias,
+              restaurantes, bares, supermercados y distribuidores
+            </p>
+          </div>
+          <div class="ca-toolbar">
+            <button
+              class="btn bs"
+              type="button"
+              onclick="openModal('newReclamoModal')"
+            >
+              Nuevo Reclamo
+            </button>
+          </div>
+        </div>
+
+        <div class="ca-nav">
+          <a
+            class="ca-nav-link active"
+            href="atencion-reclamos-comerciales.html"
+            >Lista de Reclamos Comerciales</a
+          >
+        </div>
+
+        <div class="ca-board">
+          <section class="ca-panel">
+            <h3>Filtros</h3>
+            <div class="ca-field">
+              <span class="ca-label">Estado</span
+              ><select>
+                <option>Todos</option>
+                <option>No iniciado</option>
+                <option>Derivado</option>
+                <option>Resolución Completa</option>
+                <option>Re-validacion</option>
+                <option>Atendido</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Tipo</span
+              ><select>
+                <option>Todos</option>
+                <option>Consulta</option>
+                <option>Reclamo</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Prioridad</span
+              ><select>
+                <option>Todas</option>
+                <option>Alta</option>
+                <option>Media</option>
+                <option>Baja</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Fecha</span><input type="date" />
+            </div>
+            <button class="btn bs" type="button">Aplicar filtros</button>
+            <div class="ca-card" style="margin-top: var(--sp2)">
+              <h4>Acciones rapidas</h4>
+              <div class="ca-actions" style="margin-top: var(--sp2)">
+                <button
+                  class="btn bs"
+                  type="button"
+                  onclick="openModal('newReclamoModal')"
+                >
+                  Registrar solicitud
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="ca-main">
+            <div class="ca-kpi-grid">
+              <div class="ca-kpi">
+                <span>Total reclamos</span><strong>328</strong>
+              </div>
+              <div class="ca-kpi">
+                <span>Reclamos abiertos</span><strong>109</strong>
+              </div>
+              <div class="ca-kpi">
+                <span>En espera</span><strong>42</strong>
+              </div>
+              <div class="ca-kpi">
+                <span>Atendidos</span><strong>98</strong>
+              </div>
+            </div>
+
+            <div class="ca-card">
+              <div class="ca-table-head">
+                <div>
+                  <h3>Tabla de reclamos comerciales</h3>
+                  <p class="ca-note">
+                    Usa Acciones para ver y actualizar cada reclamo
+                  </p>
+                </div>
+              </div>
+              <div class="ca-table-wrap" style="margin-top: var(--sp2)">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nro Reclamo</th>
+                      <th>Fecha</th>
+                      <th>RUC</th>
+                      <th>Razon Social</th>
+                      <th>Nombre Comercial</th>
+                      <th>Canal</th>
+                      <th>Contacto del Cliente</th>
+                      <th>Marca / Producto</th>
+                      <th>Motivo</th>
+                      <th>Area Derivada</th>
+                      <th>Estado</th>
+                      <th>Ultima Actualizacion</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-case="RECL-2026-0001">
+                      <td>
+                        <button
+                          type="button"
+                          class="ca-row-btn"
+                          onclick="openCaseDetail('RECL-2026-0001')"
+                        >
+                          RECL-2026-0001
+                        </button>
+                      </td>
+                      <td>13 Abr 2026</td>
+                      <td>20500111222</td>
+                      <td>Bodega San Juan</td>
+                      <td>San Juan Market</td>
+                      <td>Bodega</td>
+                      <td>Luis Vera</td>
+                      <td>Heineken / lote</td>
+                      <td>Producto en mal estado</td>
+                      <td>Calidad</td>
+                      <td>
+                        <span class="ca-status no-iniciado">No iniciado</span>
+                      </td>
+                      <td>Hace 20 min</td>
+                      <td>
+                        <div class="ca-row-actions">
+                          <button
+                            class="btn bs"
+                            type="button"
+                            onclick="openCaseDetail('RECL-2026-0001')"
+                          >
+                            Actualizar estado
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr data-case="RECL-2026-0002">
+                      <td>
+                        <button
+                          type="button"
+                          class="ca-row-btn"
+                          onclick="openCaseDetail('RECL-2026-0002')"
+                        >
+                          RECL-2026-0002
+                        </button>
+                      </td>
+                      <td>13 Abr 2026</td>
+                      <td>20611444777</td>
+                      <td>Licoreria El Punto</td>
+                      <td>El Punto</td>
+                      <td>Licoreria</td>
+                      <td>Mariela Chacon</td>
+                      <td>Amstel / pedido</td>
+                      <td>Faltante en entrega</td>
+                      <td>Logistica</td>
+                      <td><span class="ca-status derivado">Derivado</span></td>
+                      <td>Hace 1 h</td>
+                      <td>
+                        <div class="ca-row-actions">
+                          <button
+                            class="btn bs"
+                            type="button"
+                            onclick="openCaseDetail('RECL-2026-0002')"
+                          >
+                            Informacion del Reclamo
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr data-case="RECL-2026-0003">
+                      <td>
+                        <button
+                          type="button"
+                          class="ca-row-btn"
+                          onclick="openCaseDetail('RECL-2026-0003')"
+                        >
+                          RECL-2026-0003
+                        </button>
+                      </td>
+                      <td>12 Abr 2026</td>
+                      <td>20199887766</td>
+                      <td>Restobar La Esquina</td>
+                      <td>La Esquina</td>
+                      <td>Restaurante</td>
+                      <td>Patricia Diaz</td>
+                      <td>Tres Cruces Lager</td>
+                      <td>Promocion no aplicada</td>
+                      <td>Comercial</td>
+                      <td>
+                        <span class="ca-status resolucion-completa"
+                          >Resolución Completa</span
+                        >
+                      </td>
+                      <td>Hace 3 h</td>
+                      <td>
+                        <div class="ca-row-actions">
+                          <button
+                            class="btn bs"
+                            type="button"
+                            onclick="openCaseDetail('RECL-2026-0003')"
+                          >
+                            Actualizar estado
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr data-case="RECL-2026-0004">
+                      <td>
+                        <button
+                          type="button"
+                          class="ca-row-btn"
+                          onclick="openCaseDetail('RECL-2026-0004')"
+                        >
+                          RECL-2026-0004
+                        </button>
+                      </td>
+                      <td>12 Abr 2026</td>
+                      <td>20555666778</td>
+                      <td>Distribuidora Norte</td>
+                      <td>Norte Express</td>
+                      <td>Distribuidor</td>
+                      <td>Ricardo Solis</td>
+                      <td>Tres Cruces PUM PUM</td>
+                      <td>Diferencia pedido / entrega</td>
+                      <td>Logistica</td>
+                      <td><span class="ca-status atendido">Atendido</span></td>
+                      <td>Ayer</td>
+                      <td>
+                        <div class="ca-row-actions">
+                          <button
+                            class="btn bs"
+                            type="button"
+                            onclick="openCaseDetail('RECL-2026-0004')"
+                          >
+                            Actualizar estado
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="caseDetailModal" class="modal">
+      <button
+        type="button"
+        class="modal-overlay"
+        aria-label="Cerrar modal de detalle"
+        onclick="closeModal('caseDetailModal')"
+      ></button>
+      <div class="modal-content ca-detail-modal">
+        <div class="modal-header">
+          <div>
+            <h2 id="detailCaseTitle">Detalle del reclamo</h2>
+            <p class="ca-note" id="detailCaseSubtitle">
+              Expediente B2B del cliente comercial
+            </p>
+          </div>
+          <div class="ca-detail-header-actions">
+            <span id="detailStatusBadge" class="ca-status no-iniciado"
+              >No iniciado</span
+            >
+            <button class="modal-close" onclick="closeModal('caseDetailModal')">
+              &times;
+            </button>
+          </div>
+        </div>
+        <div class="modal-body ca-detail-modal-body">
+          <div class="ca-detail-summary">
+            <section class="ca-card ca-detail-block">
+              <h4>Datos del negocio</h4>
+              <div class="ca-subgrid" style="margin-top: var(--sp2)">
+                <div class="ca-list-item">
+                  <strong>Razon social</strong
+                  ><span id="detailRazonSocial">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Nombre comercial</strong
+                  ><span id="detailNombreComercial">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Canal</strong><span id="detailCanal">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Contacto</strong><span id="detailContacto">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Telefono</strong><span id="detailTelefono">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Correo</strong><span id="detailCorreo">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Direccion</strong><span id="detailDireccion">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Distrito</strong><span id="detailDistrito">-</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="ca-card ca-detail-block">
+              <h4>Datos del reclamo</h4>
+              <div class="ca-list" style="margin-top: var(--sp2)">
+                <div class="ca-list-item">
+                  <strong>Marca / Producto</strong
+                  ><span id="detailProducto">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Motivo</strong><span id="detailMotivo">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Descripcion</strong
+                  ><span id="detailDescripcion">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Area sugerida</strong
+                  ><span id="detailAreaSugerida">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Ultima actualizacion</strong
+                  ><span id="detailActualizacion">-</span>
+                </div>
+                <div class="ca-list-item">
+                  <strong>Evidencia adjunta</strong
+                  ><span id="detailEvidencia">-</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div id="detailInfoBanner" class="ca-feedback"></div>
+
+          <section class="ca-card ca-detail-flow">
+            <div class="ca-detail-flow-head">
+              <div>
+                <h4>Acciones sobre el reclamo</h4>
+                <p class="ca-note" id="detailActionNote">
+                  Abre la derivacion o revisa la respuesta segun el estado.
+                </p>
+              </div>
+              <div class="ca-actions">
+                <button
+                  id="detailDeriveBtn"
+                  class="btn bp"
+                  type="button"
+                  onclick="handleDeriveAction()"
+                >
+                  Derivar reclamo
+                </button>
+                <button
+                  id="detailResponseBtn"
+                  class="btn bs"
+                  type="button"
+                  onclick="openResponseModal()"
+                >
+                  Revisar respuesta
+                </button>
+              </div>
+            </div>
+            <div id="derivePanel" class="ca-derive-panel" hidden>
+              <div class="ca-modal-grid">
+                <div class="ca-field full">
+                  <span class="ca-label">Texto adicional de CRM</span>
+                  <textarea id="deriveNote">
+Se amplia el contexto del reclamo comercial para que el area tome accion con prioridad.</textarea
+                  >
+                </div>
+                <div class="ca-field">
+                  <span class="ca-label">Area a derivar</span>
+                  <select id="deriveArea">
+                    <option value="">Seleccionar area</option>
+                    <option>Calidad</option>
+                    <option>Logistica</option>
+                    <option>Facturacion</option>
+                    <option>Comercial</option>
+                  </select>
+                </div>
+                <div class="ca-field">
+                  <span class="ca-label">Prioridad</span>
+                  <select id="derivePriority">
+                    <option>Alta</option>
+                    <option>Media</option>
+                    <option>Baja</option>
+                  </select>
+                </div>
+              </div>
+              <p class="ca-note">
+                Primero se expande esta modal. Luego, con el texto y el area
+                listos, vuelve a pulsar derivar para enviar el reclamo.
+              </p>
+            </div>
+          </section>
+
+          <section class="ca-card">
+            <h4>Historial y evidencia</h4>
+            <div class="ca-timeline" style="margin-top: var(--sp2)">
+              <div class="ca-timeline-item">
+                <div class="ca-dot"></div>
+                <div class="ca-meta">
+                  <strong>Reclamo registrado</strong
+                  ><span>Se crea el expediente comercial.</span>
+                </div>
+              </div>
+              <div class="ca-timeline-item">
+                <div class="ca-dot"></div>
+                <div class="ca-meta">
+                  <strong>Clasificado por CRM</strong
+                  ><span>Se valida motivo, canal y prioridad.</span>
+                </div>
+              </div>
+              <div class="ca-timeline-item">
+                <div class="ca-dot"></div>
+                <div class="ca-meta">
+                  <strong>Seguimiento activo</strong
+                  ><span id="detailTimelineLast"
+                    >En espera de accion posterior.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div id="responseModal" class="modal">
+      <button
+        type="button"
+        class="modal-overlay"
+        aria-label="Cerrar modal de respuesta"
+        onclick="closeModal('responseModal')"
+      ></button>
+      <div class="modal-content ca-response-modal">
+        <div class="modal-header">
+          <div>
+            <h2>Respuesta del area</h2>
+            <p class="ca-note" id="responseCaseSubtitle">
+              Reporte del area sobre el reclamo comercial
+            </p>
+          </div>
+          <button class="modal-close" onclick="closeModal('responseModal')">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <section class="ca-card">
+            <h4>Reporte recibido</h4>
+            <div
+              id="responseReportText"
+              class="ca-list-item"
+              style="margin-top: var(--sp2)"
+            >
+              -
+            </div>
+          </section>
+
+          <div class="ca-response-switch">
+            <button
+              id="reviewModeBtn"
+              class="btn bs active"
+              type="button"
+              onclick="setResponseMode('review')"
+            >
+              Pedir revision otra vez
+            </button>
+            <button
+              id="sendModeBtn"
+              class="btn bs"
+              type="button"
+              onclick="setResponseMode('send')"
+            >
+              Enviar al cliente
+            </button>
+          </div>
+
+          <div id="responseReviewPanel" class="ca-response-panel">
+            <div class="ca-field full">
+              <span class="ca-label">Texto adicional de CRM para revision</span>
+              <textarea id="responseReviewText">
+Se solicita una segunda revision con contexto adicional de CRM antes de cerrar el caso.</textarea
+              >
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Area sugerida</span>
+              <select id="responseReviewArea">
+                <option>Calidad</option>
+                <option>Logistica</option>
+                <option>Facturacion</option>
+                <option>Comercial</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Prioridad</span>
+              <select id="responseReviewPriority">
+                <option>Alta</option>
+                <option>Media</option>
+                <option>Baja</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="responseSendPanel" class="ca-response-panel">
+            <div class="ca-field full">
+              <span class="ca-label">Texto para el cliente</span>
+              <textarea id="responseSendText">
+Se informa al cliente comercial que su reclamo fue atendido correctamente y se ejecutaron las acciones de cierre correspondientes.</textarea
+              >
+            </div>
+            <div class="ca-field full">
+              <span class="ca-label">Asunto de salida</span>
+              <input
+                id="responseSendSubject"
+                value="Atencion de reclamo comercial"
+              />
+            </div>
+          </div>
+
+          <div id="responseFeedback" class="ca-feedback"></div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn bs"
+            type="button"
+            onclick="closeModal('responseModal')"
+          >
+            Cerrar
+          </button>
+          <button
+            class="btn bp"
+            id="responseActionBtn"
+            type="button"
+            onclick="handleResponseAction()"
+          >
+            Pedir revision otra vez
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="newReclamoModal" class="modal">
+      <button
+        type="button"
+        class="modal-overlay"
+        aria-label="Cerrar modal de nuevo reclamo"
+        onclick="closeModal('newReclamoModal')"
+      ></button>
+      <div
+        class="modal-content"
+        style="
+          width: min(1180px, calc(100vw - 2rem));
+          max-height: calc(100dvh - 2rem);
+        "
+      >
+        <div class="modal-header">
+          <h2>Nuevo Reclamo Comercial</h2>
+          <button class="modal-close" onclick="closeModal('newReclamoModal')">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="ca-modal-grid">
+            <div class="ca-field">
+              <span class="ca-label">RUC</span><input value="20500111222" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Razon social</span
+              ><input value="Bodega San Juan" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Nombre comercial</span
+              ><input value="San Juan Market" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Canal</span
+              ><select>
+                <option>Bodega</option>
+                <option>Licoreria</option>
+                <option>Restaurante</option>
+                <option>Bar</option>
+                <option>Supermercado</option>
+                <option>Distribuidor</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Tipo de negocio</span
+              ><select>
+                <option>Bodega</option>
+                <option>Licoreria</option>
+                <option>Restobar</option>
+                <option>Supermercado</option>
+                <option>Distribuidor</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Contacto del cliente</span
+              ><input value="Luis Vera" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Telefono</span
+              ><input value="+51 987654321" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Correo</span
+              ><input type="email" value="luis@sanjuan.pe" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Direccion del local</span
+              ><input value="Av. Abancay 123" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Distrito</span
+              ><input value="Cercado de Lima" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Marca afectada</span
+              ><select>
+                <option>Heineken</option>
+                <option>Amstel</option>
+                <option>Tres Cruces Lager</option>
+                <option>Tres Cruces PUM PUM</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Producto afectado</span
+              ><input value="Heineken 650ml" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Lote si aplica</span><input value="2401" />
+            </div>
+            <div class="ca-field full">
+              <span class="ca-label">Descripcion del reclamo</span
+              ><textarea>
+Producto en mal estado detectado por el cliente comercial al momento de la recepcion.</textarea
+              >
+            </div>
+            <div class="ca-field full">
+              <span class="ca-label">Adjuntar evidencia</span
+              ><input value="foto_lote_2401.jpg, guia_8821.pdf" />
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Area pertinente sugerida</span
+              ><select>
+                <option>Calidad</option>
+                <option>Logistica</option>
+                <option>Facturacion</option>
+                <option>Comercial</option>
+              </select>
+            </div>
+            <div class="ca-field">
+              <span class="ca-label">Prioridad</span
+              ><select>
+                <option>Alta</option>
+                <option>Media</option>
+                <option>Baja</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn bs"
+            type="button"
+            onclick="closeModal('newReclamoModal')"
+          >
+            Cancelar
+          </button>
+          <button class="btn bp" type="button">Registrar reclamo</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="confirmToast"
+      class="ca-toast"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <output id="confirmToastCard" class="ca-toast-card success">
+        <span id="confirmToastIcon" class="ca-toast-icon"></span>
+        <span id="confirmToastMessage"></span>
+      </output>
+    </div>
+
+    <script src="atencion-reclamos-comerciales.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Satisfacción del Cliente B2B - Heineken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../stylebase.css" />
+    <link rel="stylesheet" href="crmstyle.css" />
+    <style>
+      /* Custom styles for satisfaction surveys - using existing crmstyle classes */
+      .sc-tab-nav {
+        display: flex;
+        gap: 0.5rem;
+        padding: var(--sp2);
+        background: var(--su);
+        border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+        overflow-x: auto;
+      }
+
+      .sc-tab-btn {
+        padding: var(--sp2) var(--sp3);
+        border: none;
+        background: transparent;
+        color: var(--tm);
+        font-weight: 500;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 200ms ease;
+        white-space: nowrap;
+      }
+
+      .sc-tab-btn:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .sc-tab-btn.active {
+        color: var(--g);
+        border-bottom-color: var(--g);
+      }
+
+      .sc-view {
+        display: none;
+        height: calc(100% - 60px);
+        overflow-y: auto;
+        padding: var(--sp3);
+      }
+
+      .sc-view.active {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sc-section {
+        background: var(--su);
+        border-radius: var(--rlg);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        padding: var(--sp3) var(--sp4);
+        margin-bottom: var(--sp2);
+        box-shadow: var(--shsm);
+      }
+
+      .sc-header {
+        margin-bottom: var(--sp2);
+      }
+
+      .sc-header h2 {
+        font-size: var(--tlg);
+        font-weight: 600;
+        color: var(--g);
+        margin-bottom: 0.5rem;
+      }
+
+      .sc-header p {
+        font-size: var(--tsm);
+        color: var(--tm);
+        margin: 0;
+      }
+
+      .sc-grid-clients {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: var(--sp2);
+        margin-bottom: var(--sp3);
+      }
+
+      .sc-client-card {
+        background: rgba(0, 114, 42, 0.02);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: var(--rmd);
+        padding: var(--sp3);
+        cursor: pointer;
+        transition: all 200ms ease;
+        position: relative;
+      }
+
+      .sc-client-card:hover {
+        border-color: var(--g);
+        box-shadow: var(--shgmd);
+        background: rgba(0, 114, 42, 0.05);
+      }
+
+      .sc-client-card.selected {
+        background: rgba(0, 114, 42, 0.08);
+        border-color: var(--g);
+      }
+
+      .sc-client-card input[type="checkbox"] {
+        position: absolute;
+        top: var(--sp3);
+        right: var(--sp3);
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .sc-client-info {
+        padding-top: 1.5rem;
+      }
+
+      .sc-client-name {
+        font-weight: 600;
+        color: var(--t);
+        margin-bottom: 0.25rem;
+        font-size: var(--tsm);
+      }
+
+      .sc-client-ruc {
+        font-size: var(--txs);
+        color: var(--tm);
+        margin-bottom: 0.5rem;
+      }
+
+      .sc-client-segment {
+        display: inline-block;
+        font-size: 10px;
+        padding: 0.3rem 0.6rem;
+        border-radius: var(--rsm);
+        background: rgba(0, 114, 42, 0.1);
+        color: var(--g);
+        font-weight: 600;
+      }
+
+      .sc-filter-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: var(--sp2);
+        border: none;
+      }
+
+      .sc-filter-btn {
+        padding: var(--sp2) var(--sp3);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: var(--su);
+        border-radius: var(--rmd);
+        cursor: pointer;
+        font-size: var(--tsm);
+        transition: all 150ms ease;
+        font-weight: 500;
+      }
+
+      .sc-filter-btn:hover {
+        border-color: var(--g);
+        color: var(--g);
+      }
+
+      .sc-filter-btn.active {
+        background: var(--g);
+        color: white;
+        border-color: var(--g);
+      }
+
+      .sc-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: var(--sp2);
+        margin-bottom: var(--sp3);
+      }
+
+      .sc-summary-card {
+        background: linear-gradient(135deg, #f8faf8 0%, #f1f5f1 100%);
+        border-left: 4px solid var(--g);
+        padding: var(--sp3);
+        border-radius: var(--rmd);
+      }
+
+      .sc-summary-card.warning {
+        border-left-color: #f9a825;
+      }
+
+      .sc-summary-card.danger {
+        border-left-color: #c62828;
+      }
+
+      .sc-summary-card.success {
+        border-left-color: #2e7d32;
+      }
+
+      .sc-summary-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        color: var(--tm);
+        margin-bottom: 0.3rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+      }
+
+      .sc-summary-value {
+        font-size: var(--tlg);
+        font-weight: 700;
+        color: var(--g);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .sc-survey-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--sp2);
+        margin-bottom: var(--sp3);
+      }
+
+      .sc-survey-card {
+        background: rgba(0, 114, 42, 0.02);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: var(--rmd);
+        padding: var(--sp3);
+        cursor: pointer;
+        transition: all 200ms ease;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sc-survey-card:hover {
+        border-color: var(--g);
+        box-shadow: var(--shmd);
+        background: rgba(0, 114, 42, 0.05);
+      }
+
+      .sc-survey-card.suitable {
+        border-left: 4px solid var(--g);
+      }
+
+      .sc-survey-card.suitable::before {
+        content: "✓ Idónea";
+        font-size: 10px;
+        color: var(--g);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .sc-survey-name {
+        font-weight: 600;
+        color: var(--t);
+        margin-bottom: 0.5rem;
+        font-size: var(--tsm);
+      }
+
+      .sc-survey-segment {
+        font-size: var(--txs);
+        color: var(--tm);
+        margin-bottom: 1rem;
+      }
+
+      .sc-survey-questions {
+        font-size: 11px;
+        color: var(--tm);
+        margin-bottom: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        padding-top: 0.5rem;
+        flex: 1;
+      }
+
+      .sc-survey-q {
+        margin-bottom: 0.5rem;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .sc-survey-q::before {
+        content: "•";
+        color: var(--g);
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+
+      .sc-survey-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .sc-survey-actions .btn {
+        flex: 1;
+        font-size: 12px;
+        padding: 0.5rem 0.75rem;
+      }
+
+      .sc-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--tsm);
+      }
+
+      .sc-table thead {
+        background: rgba(0, 0, 0, 0.02);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+      }
+
+      .sc-table th {
+        padding: var(--sp3) var(--sp4);
+        text-align: left;
+        font-weight: 600;
+        color: var(--tm);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: var(--txs);
+      }
+
+      .sc-table td {
+        padding: var(--sp3) var(--sp4);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      }
+
+      .sc-table tbody tr:hover {
+        background: rgba(0, 114, 42, 0.02);
+      }
+
+      .sc-badge {
+        display: inline-block;
+        padding: 0.3rem 0.7rem;
+        border-radius: var(--rfl);
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .sc-badge.enviada {
+        background: #003d99;
+        color: white;
+      }
+
+      .sc-badge.pendiente {
+        background: #b35900;
+        color: white;
+      }
+
+      .sc-badge.recordatorio {
+        background: #4a0e73;
+        color: white;
+      }
+
+      .sc-badge.respondida {
+        background: #1a4d2e;
+        color: white;
+      }
+
+      .sc-badge.sin-responder {
+        background: #660000;
+        color: white;
+      }
+
+      .sc-progress-bar {
+        width: 100%;
+        height: 6px;
+        background: rgba(0, 0, 0, 0.08);
+        border-radius: var(--rfl);
+        overflow: hidden;
+      }
+
+      .sc-progress-fill {
+        height: 100%;
+        background: var(--g);
+        transition: width 300ms ease;
+      }
+
+      .sc-chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--sp2);
+        margin-bottom: var(--sp3);
+      }
+
+      .sc-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .sc-modal.active {
+        display: flex;
+      }
+
+      .sc-modal-content {
+        background: var(--su);
+        border-radius: var(--rlg);
+        padding: var(--sp6);
+        min-width: 500px;
+        max-width: 90%;
+        max-height: 90%;
+        overflow-y: auto;
+        box-shadow: var(--shmd);
+      }
+
+      .sc-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--sp3);
+        padding-bottom: var(--sp2);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .sc-modal-header h2 {
+        font-size: var(--tlg);
+        color: var(--g);
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .sc-modal-close {
+        background: none;
+        border: none;
+        font-size: var(--tbs);
+        cursor: pointer;
+        color: var(--tm);
+        transition: color 200ms ease;
+        padding: 0;
+      }
+
+      .sc-modal-close:hover {
+        color: var(--t);
+      }
+
+      .sc-form-group {
+        margin-bottom: var(--sp3);
+      }
+
+      .sc-form-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: var(--sp1);
+        color: var(--t);
+        font-size: var(--tsm);
+      }
+
+      .sc-form-input,
+      .sc-form-textarea {
+        width: 100%;
+        padding: var(--sp2) var(--sp3);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: var(--rmd);
+        font-family: inherit;
+        font-size: var(--tsm);
+        box-sizing: border-box;
+        background: var(--su);
+        transition: all 200ms ease;
+      }
+
+      .sc-form-textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .sc-form-input:focus,
+      .sc-form-textarea:focus {
+        outline: none;
+        border-color: var(--g);
+        box-shadow: 0 0 0 3px rgba(0, 114, 42, 0.1);
+        background: var(--bg);
+      }
+
+      .sc-questions-list {
+        margin-bottom: var(--sp2);
+      }
+
+      .sc-question-item {
+        display: flex;
+        gap: var(--sp2);
+        margin-bottom: var(--sp2);
+        align-items: flex-start;
+      }
+
+      .sc-question-item input {
+        flex: 1;
+        padding: var(--sp2) var(--sp3);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: var(--rmd);
+        font-size: var(--tsm);
+        background: var(--su);
+      }
+
+      .sc-btn-remove {
+        padding: var(--sp2) var(--sp2);
+        background: #ffe0e0;
+        border: 1px solid #ffcccc;
+        border-radius: var(--rmd);
+        color: #8b0000;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: var(--txs);
+        transition: all 150ms ease;
+      }
+
+      .sc-btn-remove:hover {
+        background: rgba(198, 40, 40, 0.2);
+      }
+
+      .sc-btn-add-question {
+        background: rgba(0, 114, 42, 0.1);
+        border: 1px dashed var(--g);
+        color: var(--g);
+        padding: var(--sp2) var(--sp3);
+        border-radius: var(--rmd);
+        cursor: pointer;
+        font-weight: 500;
+        width: 100%;
+        transition: all 150ms ease;
+      }
+
+      .sc-btn-add-question:hover {
+        background: rgba(0, 114, 42, 0.15);
+      }
+
+      .sc-conformity {
+        display: flex;
+        align-items: center;
+        gap: var(--sp2);
+        padding: var(--sp3);
+        background: rgba(0, 114, 42, 0.05);
+        border-radius: var(--rmd);
+        margin-bottom: var(--sp2);
+        border: 1px solid rgba(0, 114, 42, 0.15);
+      }
+
+      .sc-conformity-icon {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .sc-conformity-icon.yes {
+        color: var(--g);
+      }
+
+      .sc-conformity-icon.no {
+        color: #c62828;
+      }
+
+      .sc-conformity-text {
+        flex: 1;
+      }
+
+      .sc-conformity-label {
+        font-weight: 600;
+        color: var(--t);
+        margin-bottom: 0.2rem;
+        font-size: var(--tsm);
+      }
+
+      .sc-conformity-value {
+        font-size: var(--txs);
+        color: var(--tm);
+      }
+
+      .sc-buttons {
+        display: flex;
+        gap: var(--sp2);
+        margin-top: var(--sp3);
+        padding-top: var(--sp2);
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .sc-buttons .btn {
+        flex: 1;
+      }
+
+      @media (max-width: 768px) {
+        .sc-modal-content {
+          min-width: 95%;
+          padding: var(--sp4);
+        }
+
+        .sc-grid-clients,
+        .sc-survey-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .sc-summary {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .sc-table th,
+        .sc-table td {
+          padding: var(--sp2);
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hd">
+      <a class="hd-logo" href="#">
+        <img class="hd-logo-mark" src="../logo.png" alt="Heineken" />
+        <span class="hd-logo-t">Heineken ERP</span>
+      </a>
+      <div class="hd-r">
+        <button class="hd-nb" aria-label="Notificaciones">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="nd"></span>
+        </button>
+        <button class="hd-usr">
+          <div class="hd-av">MG</div>
+          <div style="text-align: left">
+            <div style="font-size: var(--txs); font-weight: 600">
+              María García
+            </div>
+            <div style="font-size: 10px; opacity: 0.7">Customer Success</div>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <div class="lay">
+      <aside class="sb" aria-label="Navegacion principal">
+        <span class="sb-lbl">CRM Módulos</span>
+        <button class="ni" onclick="loadModule('marketing')">Marketing</button>
+        <button class="ni" onclick="loadModule('ventas')">Ventas</button>
+        <button class="ni a" onclick="loadModule('satisfaccion')">
+          Satisfacción
+        </button>
+        <button class="ni" onclick="loadModule('reclamos')">Reclamos</button>
+      </aside>
+
+      <main class="mn">
+        <div class="ph">
+          <div>
+            <h1>Gestión de Satisfacción del Cliente B2B</h1>
+            <p>
+              Medición de Satisfacción mediante encuestas postventa para
+              clientes comerciales: bodegas, supermercados, horeca y
+              distribuidores
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="sc-tab-nav">
+          <button
+            class="sc-tab-btn active"
+            onclick="switchTab('campaign', this)"
+          >
+            Medición de Satisfacción
+          </button>
+          <button class="sc-tab-btn" onclick="switchTab('survey', this)">
+            Selección de Encuesta
+          </button>
+          <button class="sc-tab-btn" onclick="switchTab('tracking', this)">
+            Envío y Seguimiento
+          </button>
+          <button class="sc-tab-btn" onclick="switchTab('results', this)">
+            Resultados y Reporte
+          </button>
+        </div>
+
+        <!-- TABLET 1: Medición de Satisfacción -->
+        <div id="campaign" class="sc-view active">
+          <div class="sc-section">
+            <div class="sc-header">
+              <h2>Seleccionar Clientes</h2>
+              <p>
+                Elige los clientes comerciales para la medición de satisfacción
+              </p>
+            </div>
+
+            <!-- Filtros por Segmento -->
+            <div style="margin-bottom: var(--sp3)">
+              <p class="sc-form-label">Filtrar por Segmento</p>
+              <fieldset class="sc-filter-tabs">
+                <legend style="display: none">Filtros de segmento</legend>
+                <button
+                  class="sc-filter-btn active"
+                  onclick="filterSegment(this)"
+                >
+                  Todos
+                </button>
+                <button class="sc-filter-btn" onclick="filterSegment(this)">
+                  Bodegas
+                </button>
+                <button class="sc-filter-btn" onclick="filterSegment(this)">
+                  Supermercados
+                </button>
+                <button class="sc-filter-btn" onclick="filterSegment(this)">
+                  Horeca
+                </button>
+              </fieldset>
+            </div>
+
+            <!-- Grid de Clientes -->
+            <div class="sc-grid-clients" id="clientsGrid"></div>
+          </div>
+
+          <div class="sc-section">
+            <div class="sc-header">
+              <h2>Resumen de Selección</h2>
+              <p>Estado actual de la medición</p>
+            </div>
+
+            <div class="sc-conformity">
+              <div class="sc-conformity-icon yes" id="conformityIcon">✓</div>
+              <div class="sc-conformity-text">
+                <div class="sc-conformity-label">Estado de Selección</div>
+                <div class="sc-conformity-value" id="conformityStatus">
+                  Sin clientes seleccionados
+                </div>
+              </div>
+            </div>
+
+            <div class="sc-summary">
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Clientes Seleccionados</div>
+                <div class="sc-summary-value" id="selectedCount">0</div>
+              </div>
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Bodegas</div>
+                <div class="sc-summary-value" id="bodegasCount">0</div>
+              </div>
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Supermercados</div>
+                <div class="sc-summary-value" id="supermercadosCount">0</div>
+              </div>
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Horeca</div>
+                <div class="sc-summary-value" id="horecaCount">0</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: var(--sp2)">
+              <button class="btn bs" onclick="switchTab('survey')">
+                Continuar con Encuesta
+              </button>
+              <button class="btn sec" onclick="clearSelection()">
+                Limpiar Selección
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLET 2: Selección de Encuesta -->
+        <div id="survey" class="sc-view">
+          <div class="sc-section">
+            <div class="sc-header">
+              <h2>Encuestas Disponibles</h2>
+              <p>Selecciona una encuesta predefinida o crea una nueva</p>
+            </div>
+
+            <div class="sc-survey-cards" id="surveysGrid"></div>
+          </div>
+
+          <div class="sc-section">
+            <div class="sc-header">
+              <h2>Crear Nueva Encuesta</h2>
+              <p>Define una encuesta personalizada para tu medición</p>
+            </div>
+
+            <button
+              class="sc-btn-add-question"
+              style="width: 100%"
+              onclick="openModal('newSurveyModal')"
+            >
+              + Crear Nueva Encuesta
+            </button>
+          </div>
+
+          <div style="display: flex; gap: var(--sp2); margin-top: var(--sp3)">
+            <button class="btn sec" onclick="switchTab('campaign')">
+              Atrás
+            </button>
+            <button class="btn bs" onclick="switchTab('tracking')">
+              Siguiente: Envío y Seguimiento
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLET 3: Envío y Seguimiento -->
+        <div id="tracking" class="sc-view">
+          <div class="sc-section">
+            <div class="sc-header">
+              <h2>Envío y Seguimiento de Encuestas</h2>
+              <p>
+                Gestiona el envío de encuestas y el seguimiento de respuestas
+              </p>
+            </div>
+
+            <div class="sc-summary">
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Enviadas</div>
+                <div class="sc-summary-value" id="sentCount">0</div>
+              </div>
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Respondidas</div>
+                <div class="sc-summary-value" id="respondedCount">0</div>
+              </div>
+              <div class="sc-summary-card warning">
+                <div class="sc-summary-label">Pendiente de Respuesta</div>
+                <div class="sc-summary-value" id="pendingCount">0</div>
+              </div>
+              <div class="sc-summary-card danger">
+                <div class="sc-summary-label">Sin Responder</div>
+                <div class="sc-summary-value" id="nonRespondedCount">0</div>
+              </div>
+            </div>
+
+            <table class="sc-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Segmento</th>
+                  <th>Canal</th>
+                  <th>Fecha Envío</th>
+                  <th>Estado</th>
+                  <th>Días Transcurridos</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="trackingTable"></tbody>
+            </table>
+          </div>
+
+          <div style="display: flex; gap: var(--sp2); margin-top: var(--sp3)">
+            <button class="btn sec" onclick="switchTab('survey')">Atrás</button>
+            <button class="btn bs" onclick="switchTab('results')">
+              Siguiente: Resultados
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLET 4: Resultados y Reporte -->
+        <div id="results" class="sc-view">
+          <div class="sc-section">
+            <div class="sc-header">
+              <h2>Dashboard de Resultados</h2>
+              <p>Análisis de satisfacción y respuestas recibidas</p>
+            </div>
+
+            <div class="sc-summary">
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Total Enviadas</div>
+                <div class="sc-summary-value" id="dashTotalSent">0</div>
+              </div>
+              <div class="sc-summary-card success">
+                <div class="sc-summary-label">Total Respondidas</div>
+                <div class="sc-summary-value" id="dashTotalResponded">0</div>
+              </div>
+              <div class="sc-summary-card warning">
+                <div class="sc-summary-label">Tasa de Respuesta</div>
+                <div class="sc-summary-value" id="dashResponseRate">0%</div>
+              </div>
+              <div class="sc-summary-card">
+                <div class="sc-summary-label">Satisfacción Promedio</div>
+                <div class="sc-summary-value" id="dashAvgSatisfaction">0/5</div>
+              </div>
+            </div>
+
+            <div class="sc-chart-grid" id="chartsContainer"></div>
+
+            <table class="sc-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Segmento</th>
+                  <th>Satisfacción</th>
+                  <th>Comentarios</th>
+                  <th>Estado Validación</th>
+                </tr>
+              </thead>
+              <tbody id="resultsTable"></tbody>
+            </table>
+          </div>
+
+          <div class="sc-section">
+            <div class="sc-header">
+              <h2>Acciones Finales</h2>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: var(--sp2)">
+              <button class="btn bs" onclick="validateResults()">
+                Validar Datos
+              </button>
+              <button class="btn bs" onclick="generateReport()">
+                Generar Reporte
+              </button>
+              <button class="btn bs" onclick="cleanData()">
+                Limpiar Datos
+              </button>
+              <button class="btn bs" onclick="notifyMarketing()">
+                Notificar a Marketing
+              </button>
+              <button class="btn sec" onclick="switchTab('tracking')">
+                Atrás
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal: Nueva Encuesta -->
+    <div id="newSurveyModal" class="sc-modal">
+      <div class="sc-modal-content">
+        <div class="sc-modal-header">
+          <h2>Crear Nueva Encuesta</h2>
+          <button class="sc-modal-close" onclick="closeModal('newSurveyModal')">
+            ✕
+          </button>
+        </div>
+
+        <div class="sc-form-group">
+          <label class="sc-form-label" for="surveyName"
+            >Nombre de la Encuesta</label
+          >
+          <input
+            type="text"
+            class="sc-form-input"
+            id="surveyName"
+            placeholder="Ej: Encuesta de Satisfacción Q4 2024"
+          />
+        </div>
+
+        <div class="sc-form-group">
+          <label class="sc-form-label" for="surveySegment"
+            >Segmento Objetivo</label
+          >
+          <select class="sc-form-input" id="surveySegment">
+            <option value="">Selecciona un segmento</option>
+            <option value="Bodegas">Bodegas</option>
+            <option value="Supermercados">Supermercados</option>
+            <option value="Horeca">Horeca</option>
+            <option value="Distribuidores">Distribuidores</option>
+          </select>
+        </div>
+
+        <div class="sc-form-group">
+          <label class="sc-form-label" for="surveyChannel"
+            >Canal Recomendado</label
+          >
+          <select class="sc-form-input" id="surveyChannel">
+            <option value="">Selecciona un canal</option>
+            <option value="Correo">Correo</option>
+            <option value="WhatsApp">WhatsApp (App de Mensajería)</option>
+            <option value="SMS">SMS</option>
+          </select>
+        </div>
+
+        <div class="sc-form-group">
+          <h3 class="sc-form-label" id="questionsLabel">
+            Preguntas de la Encuesta
+          </h3>
+          <div
+            class="sc-questions-list"
+            id="questionsList"
+            aria-labelledby="questionsLabel"
+          ></div>
+          <button class="sc-btn-add-question" onclick="addQuestionField()">
+            + Agregar Pregunta
+          </button>
+        </div>
+
+        <div class="sc-buttons">
+          <button class="btn bs" onclick="saveSurvey()">
+            Guardar Encuesta
+          </button>
+          <button class="btn sec" onclick="closeModal('newSurveyModal')">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Notificación a Marketing -->
+    <div id="marketingNotificationModal" class="sc-modal">
+      <div class="sc-modal-content" style="max-width: 600px">
+        <div class="sc-modal-header">
+          <h2>✓ Notificación Enviada a Marketing</h2>
+          <button
+            class="sc-modal-close"
+            onclick="closeModal('marketingNotificationModal')"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div
+          id="marketingNotificationContent"
+          style="font-size: var(--tsm); line-height: 1.6; color: var(--t)"
+        ></div>
+
+        <div class="sc-buttons" style="margin-top: var(--sp4)">
+          <button
+            class="btn bp"
+            onclick="closeModal('marketingNotificationModal')"
+          >
+            Entendido
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="satisfaccion-cliente.js"></script>
+  </body>
+</html>

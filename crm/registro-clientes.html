@@ -725,6 +725,19 @@
                   required
                 />
               </div>
+
+              <div class="form-group">
+                <label for="cargoContacto"
+                  >Cargo del Contacto <span class="required">*</span></label
+                >
+                <input
+                  id="cargoContacto"
+                  name="cargoContacto"
+                  type="text"
+                  placeholder="Ej. Compras, administrador, gerente"
+                  required
+                />
+              </div>
               <div class="form-group">
                 <label for="telefono"
                   >Teléfono <span class="required">*</span></label
@@ -737,6 +750,19 @@
                   placeholder="9 dígitos"
                   required
                 />
+              </div>
+              <div class="form-group">
+                <label for="nivelCliente"
+                  >Tamaño / Nivel del Cliente
+                  <span class="required">*</span></label
+                >
+                <select id="nivelCliente" name="nivelCliente" required>
+                  <option value="">Selecciona un nivel</option>
+                  <option value="pequeno">Pequeño</option>
+                  <option value="mediano">Mediano</option>
+                  <option value="grande">Grande</option>
+                  <option value="estrategico">Estratégico</option>
+                </select>
               </div>
               <div class="form-group full">
                 <label for="correo"
@@ -833,6 +859,12 @@
             </div>
             <div class="summary-row">
               <strong>Contacto</strong><span id="sumContacto">-</span>
+            </div>
+            <div class="summary-row">
+              <strong>Cargo</strong><span id="sumCargoContacto">-</span>
+            </div>
+            <div class="summary-row">
+              <strong>Nivel</strong><span id="sumNivelCliente">-</span>
             </div>
           </div>
         </div>
@@ -1151,7 +1183,12 @@
             document.getElementById("tipoCliente").value =
               client.tipoCliente.toLowerCase();
             document.getElementById("contacto").value = client.contacto;
+            document.getElementById("cargoContacto").value =
+              client.cargoContacto || "";
             document.getElementById("telefono").value = client.telefono;
+            document.getElementById("nivelCliente").value = (
+              client.nivelCliente || ""
+            ).toLowerCase();
             document.getElementById("correo").value = client.correo;
             document.getElementById("direccion").value = client.direccion;
             document.getElementById("distrito").value = client.distrito;
@@ -1185,7 +1222,9 @@
           "razonSocial",
           "tipoCliente",
           "contacto",
+          "cargoContacto",
           "telefono",
+          "nivelCliente",
           "correo",
           "direccion",
           "distrito",
@@ -1226,6 +1265,12 @@
           document.getElementById("tipoCliente").selectedOptions[0].textContent;
         document.getElementById("sumContacto").textContent =
           document.getElementById("contacto").value;
+        document.getElementById("sumCargoContacto").textContent =
+          document.getElementById("cargoContacto").value;
+        document.getElementById("sumNivelCliente").textContent =
+          document.getElementById(
+            "nivelCliente",
+          ).selectedOptions[0].textContent;
 
         openModal("validationModal");
       }
@@ -1248,7 +1293,13 @@
               document.getElementById("tipoCliente").selectedOptions[0]
                 .textContent,
             contacto: document.getElementById("contacto").value.trim(),
+            cargoContacto: document
+              .getElementById("cargoContacto")
+              .value.trim(),
             telefono: document.getElementById("telefono").value.trim(),
+            nivelCliente:
+              document.getElementById("nivelCliente").selectedOptions[0]
+                .textContent,
             correo: document.getElementById("correo").value.trim(),
             direccion: document.getElementById("direccion").value.trim(),
             distrito: document.getElementById("distrito").value.trim(),

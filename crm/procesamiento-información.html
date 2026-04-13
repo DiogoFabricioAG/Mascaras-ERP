@@ -1,0 +1,1319 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Procesamiento de Información - Marketing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../stylebase.css" />
+    <link rel="stylesheet" href="crmstyle.css" />
+  </head>
+  <body>
+    <header class="hd">
+      <a class="hd-logo" href="#">
+        <img class="hd-logo-mark" src="../logo.png" alt="Heineken" />
+        <span class="hd-logo-t">Heineken ERP</span>
+      </a>
+      <div class="hd-r">
+        <button class="hd-nb" aria-label="Notificaciones">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="nd"></span>
+        </button>
+        <button class="hd-usr">
+          <div class="hd-av">JR</div>
+          <div style="text-align: left">
+            <div style="font-size: var(--txs); font-weight: 600">
+              Juan Ramírez
+            </div>
+            <div style="font-size: 10px; opacity: 0.7">Administrador</div>
+          </div>
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="lay">
+      <aside class="sb">
+        <span class="sb-lbl">Módulos</span>
+        <button class="ni a" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 4h6v6H4z" />
+            <path d="M14 4h6v6h-6z" />
+            <path d="M4 14h6v6H4z" />
+          </svg>
+          Marketing
+        </button>
+        <button class="ni" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          Ventas
+        </button>
+        <button class="ni" onclick="act(this)">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+          CRM
+        </button>
+      </aside>
+
+      <main class="mn">
+        <div class="ph">
+          <div>
+            <h1>Procesamiento de Peticiones de Marketing</h1>
+            <p>
+              Flujo técnico del equipo CRM: recepción, transformación de datos y
+              entrega de reportes para que Marketing solo revise y ejecute
+              estrategia
+            </p>
+          </div>
+        </div>
+
+        <div class="workflow-topbar">
+          <div style="display: flex; gap: var(--sp2); flex-wrap: wrap">
+            <span class="step-badge active" id="badgeStep1">Recopilar</span>
+            <span class="step-badge" id="badgeStep2">Transformar</span>
+            <span class="step-badge" id="badgeStep3">Generar Reporte</span>
+          </div>
+          <a class="btn bs workflow-link" href="buzon-marketing.html">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M22 12h-6l-2 3H8l-2-3H2" />
+              <path d="M5 12V5a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v7" />
+            </svg>
+            Ir al buzón de peticiones
+          </a>
+        </div>
+
+        <div class="workflow-grid">
+          <div class="stage-card" id="stage1Card">
+            <div class="stage-head">
+              <h3>Recopilar</h3>
+              <p>
+                Aplica filtros y observa en tiempo real cuántos clientes entran
+                en el reporte
+              </p>
+            </div>
+            <div class="stage-body">
+              <div class="request-summary">
+                <h3>Petición activa</h3>
+                <div class="request-kv" id="requestDetails">
+                  <div>
+                    <strong>Estado</strong
+                    ><span id="requestStatus">Pendiente</span>
+                  </div>
+                  <div>
+                    <strong>Solicitante</strong
+                    ><span id="requestArea">Marketing</span>
+                  </div>
+                  <div>
+                    <strong>Petición técnica</strong
+                    ><span id="requestObjective"
+                      >Clientes sin compra en 60 o 90 días segmentados por
+                      canal, zona y frecuencia histórica</span
+                    >
+                  </div>
+                  <div>
+                    <strong>Reglas</strong
+                    ><span id="requestSegment"
+                      >Excluir clientes sin actividad relevante y priorizar
+                      quienes tuvieron compras o engagement previos</span
+                    >
+                  </div>
+                  <div>
+                    <strong>Reporte sugerido</strong
+                    ><span id="requestReportName"
+                      >Reporte de clientes inactivos con potencial de
+                      reactivación</span
+                    >
+                  </div>
+                  <div>
+                    <strong>Fecha</strong
+                    ><span id="requestDate">12 Abr 2026</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filter-card" style="margin-top: var(--sp3)">
+                <h3>Filtros de recopilación</h3>
+                <div class="filter-grid">
+                  <div class="form-group">
+                    <label for="fZona">Zona</label>
+                    <select id="fZona" onchange="applyFilters()">
+                      <option value="">Todas</option>
+                      <option value="norte">Norte</option>
+                      <option value="sur">Sur</option>
+                      <option value="centro">Centro</option>
+                      <option value="este">Este</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="fTipo">Tipo cliente</label>
+                    <select id="fTipo" onchange="applyFilters()">
+                      <option value="">Todos</option>
+                      <option value="bodega">Bodega</option>
+                      <option value="empresa">Empresa</option>
+                      <option value="distribuidor">Distribuidor</option>
+                      <option value="mayorista">Mayorista</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="fNivel">Nivel</label>
+                    <select id="fNivel" onchange="applyFilters()">
+                      <option value="">Todos</option>
+                      <option value="pequeno">Pequeño</option>
+                      <option value="mediano">Mediano</option>
+                      <option value="grande">Grande</option>
+                      <option value="estrategico">Estratégico</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="fCategoria">Categoría</label>
+                    <select id="fCategoria" onchange="applyFilters()">
+                      <option value="">Todas</option>
+                      <option value="tradicional">Tradicional</option>
+                      <option value="moderno">Moderno</option>
+                      <option value="horeca">Horeca</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="summary-box compact" style="margin-top: var(--sp3)">
+                  <div class="summary-row">
+                    <strong>Clientes visibles</strong
+                    ><span id="liveCount">0</span>
+                  </div>
+                  <div class="summary-row">
+                    <strong>Filas capturadas</strong
+                    ><span id="liveRows">0</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="live-card" style="margin-top: var(--sp3)">
+                <h3>Tabla en tiempo real</h3>
+                <div class="live-table-wrap compact">
+                  <table class="live-table">
+                    <thead>
+                      <tr>
+                        <th>RUC</th>
+                        <th>Cliente</th>
+                        <th>Zona</th>
+                        <th>Tipo</th>
+                        <th>Nivel</th>
+                        <th>Canal</th>
+                      </tr>
+                    </thead>
+                    <tbody id="liveTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="stage-actions-row">
+                <button
+                  class="btn bp"
+                  type="button"
+                  onclick="openStageConfirm(2)"
+                >
+                  Transformar datos
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-card" id="stage2Card" style="display: none">
+            <div class="stage-head">
+              <h3>Transformar</h3>
+              <p>
+                Limpieza, segmentación dinámica y construcción de indicadores
+                sintéticos para detectar fuga por canal
+              </p>
+            </div>
+            <div class="stage-body">
+              <div class="transform-controls">
+                <button
+                  class="transform-btn active"
+                  data-mode="clean"
+                  onclick="setTransformMode('clean')"
+                >
+                  Limpieza y deduplicación
+                </button>
+                <button
+                  class="transform-btn"
+                  data-mode="segment"
+                  onclick="setTransformMode('segment')"
+                >
+                  Segmentación dinámica
+                </button>
+                <button
+                  class="transform-btn"
+                  data-mode="indicators"
+                  onclick="setTransformMode('indicators')"
+                >
+                  Indicadores sintéticos
+                </button>
+                <button
+                  class="transform-btn"
+                  data-mode="priority"
+                  onclick="setTransformMode('priority')"
+                >
+                  Priorización de fuga
+                </button>
+              </div>
+
+              <div class="kpi-grid">
+                <div class="kpi-card">
+                  <span>Registros analizados</span>
+                  <strong id="kpiTotal">0</strong>
+                </div>
+                <div class="kpi-card">
+                  <span>Duplicados limpiados</span>
+                  <strong id="kpiIndicators">0</strong>
+                </div>
+                <div class="kpi-card">
+                  <span>Segmentos creados</span>
+                  <strong id="kpiZones">0</strong>
+                </div>
+              </div>
+
+              <div
+                class="group-card"
+                style="margin-top: var(--sp3); padding: var(--sp3)"
+              >
+                <h3>Matriz de transformación CRM</h3>
+                <div class="simple-chart" id="transformChartBars"></div>
+                <p class="chart-note" id="transformChartNote">
+                  El CRM consolida filas en grupos analíticos listos para
+                  decisiones de marketing.
+                </p>
+              </div>
+
+              <div class="stage-actions-row">
+                <button
+                  class="btn bp"
+                  type="button"
+                  onclick="openStageConfirm(3)"
+                >
+                  Confirmar transformación
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-card" id="stage3Card" style="display: none">
+            <div class="stage-head">
+              <h3>Reporte Ejecutivo</h3>
+              <p>
+                Riesgo de fuga y potencial de reactivación por canal para
+                priorizar intervención comercial
+              </p>
+            </div>
+            <div class="report-preview">
+              <div class="report-sheet" id="reportPreview">
+                <div class="report-sheet-header">
+                  <div>
+                    <h3 id="reportMainTitle">
+                      Reporte de riesgo de fuga y potencial de reactivación por
+                      canal
+                    </h3>
+                    <p id="reportSubtitle">
+                      HEINEKEN Perú · Canales tradicional, Horeca y licorerías
+                    </p>
+                  </div>
+                  <div class="report-stamp">CRM INSIGHT</div>
+                </div>
+                <div class="report-sheet-body">
+                  <div class="report-info-grid">
+                    <div class="report-info">
+                      <span>% activos / riesgo / inactivos</span
+                      ><strong id="reportRequestName">0% / 0% / 0%</strong>
+                    </div>
+                    <div class="report-info">
+                      <span>Variación frecuencia</span
+                      ><strong id="reportClientsCount">0%</strong>
+                    </div>
+                    <div class="report-info">
+                      <span>Variación ticket</span
+                      ><strong id="reportGroupsCount">0%</strong>
+                    </div>
+                    <div class="report-info">
+                      <span>Alto valor con fuga</span
+                      ><strong id="reportStatus">0%</strong>
+                    </div>
+                  </div>
+
+                  <div class="report-notes" id="reportNotes">
+                    Dashboard sintético para decisiones de estrategia:
+                    retención, win-back, promociones por canal y mejora de
+                    experiencia.
+                  </div>
+
+                  <div class="report-grid-2">
+                    <div class="report-panel">
+                      <h4>Barras por canal</h4>
+                      <div id="channelBars" class="channel-bars"></div>
+                      <div
+                        class="chart-legend"
+                        aria-label="Leyenda barras por canal"
+                      >
+                        <span><i class="dot active"></i>Activo</span>
+                        <span><i class="dot risk"></i>En riesgo</span>
+                        <span><i class="dot inactive"></i>Inactivo</span>
+                      </div>
+                    </div>
+                    <div class="report-panel">
+                      <h4>Tendencia de frecuencia (6 meses)</h4>
+                      <svg
+                        id="trendChart"
+                        class="trend-svg"
+                        viewBox="0 0 320 120"
+                        aria-label="Tendencia"
+                      ></svg>
+                      <div class="trend-meta">
+                        Eje X: Meses · Eje Y: Frecuencia promedio
+                      </div>
+                    </div>
+                    <div class="report-panel">
+                      <h4>Heatmap de riesgo por zona</h4>
+                      <div id="riskHeatmap" class="heatmap-grid"></div>
+                    </div>
+                    <div class="report-panel full">
+                      <h4>Reclamos y satisfacción por segmento</h4>
+                      <div id="compareBars" class="compare-bars"></div>
+                    </div>
+                  </div>
+
+                  <div class="report-strategy" style="margin-top: var(--sp3)">
+                    <h4>Resumen de la información</h4>
+                    <ul class="summary-list" id="reportSummaryList"></ul>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  margin-top: var(--sp3);
+                  display: flex;
+                  gap: var(--sp2);
+                  flex-wrap: wrap;
+                  justify-content: flex-end;
+                "
+              >
+                <button
+                  class="btn bp"
+                  type="button"
+                  onclick="sendToMarketing()"
+                >
+                  Enviar a Marketing
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="processModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div
+        class="modal-content"
+        style="
+          width: min(620px, calc(100vw - 2rem));
+          max-height: calc(100dvh - 2rem);
+        "
+      >
+        <div class="modal-header">
+          <h2 id="processModalTitle">Reporte Entregado</h2>
+          <button class="modal-close" onclick="closeModal('processModal')">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="summary-box" id="processModalBody">
+            <div class="delivery-success">
+              <div class="delivery-check" aria-hidden="true">
+                <svg
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <h3>Reporte Entregado</h3>
+              <p>Enviado Correctamente, Marcado como Atendido.</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn bp"
+            onclick="closeModal('processModal')"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadingModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content sync-modal">
+        <div class="sync-header">
+          <div class="sync-animation">
+            <div class="sync-spinner"></div>
+          </div>
+          <h2>Generando PDF</h2>
+        </div>
+        <p class="sync-text">Transformando indicadores y preparando envío...</p>
+      </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content validation-modal">
+        <div class="modal-header">
+          <h2 id="confirmTitle">Confirmar cambio de etapa</h2>
+          <button class="modal-close" onclick="closeModal('confirmModal')">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="summary-box compact" id="confirmBody"></div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn bs"
+            onclick="closeModal('confirmModal')"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn bp"
+            id="confirmActionBtn"
+            onclick="confirmStageChange()"
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const activeRequest = {
+        title:
+          "Reporte de riesgo de fuga y potencial de reactivación por canal",
+        reportName:
+          "Reporte de riesgo de fuga y potencial de reactivación de clientes por canal",
+        area: "Marketing",
+        objective:
+          "Identificar segmentos que reducen frecuencia de compra y clientes de alto valor con señales de fuga.",
+        segment:
+          "Cruzar canal, zona, frecuencia, ticket, reclamos, satisfacción y nivel de actividad para priorizar intervención.",
+        date: "13 Abr 2026",
+        status: "Pendiente",
+      };
+
+      const baseCustomers = [
+        {
+          ruc: "20500111222",
+          cliente: "Bodega San Miguel",
+          zona: "Norte",
+          tipo: "Bodega",
+          nivel: "Pequeño",
+          canal: "Tradicional",
+          categoria: "tradicional",
+          freqPrev: 5,
+          freqNow: 3,
+          ticketPrev: 420,
+          ticketNow: 360,
+          claims: 2,
+          satisfaction: 69,
+          engagement: 54,
+        },
+        {
+          ruc: "20611444777",
+          cliente: "Distribuciones del Sur",
+          zona: "Sur",
+          tipo: "Distribuidor",
+          nivel: "Grande",
+          canal: "Tradicional",
+          categoria: "tradicional",
+          freqPrev: 7,
+          freqNow: 5,
+          ticketPrev: 980,
+          ticketNow: 840,
+          claims: 3,
+          satisfaction: 64,
+          engagement: 49,
+        },
+        {
+          ruc: "20477888991",
+          cliente: "Minimarket El Ahorro",
+          zona: "Este",
+          tipo: "Bodega",
+          nivel: "Mediano",
+          canal: "Moderno",
+          categoria: "moderno",
+          freqPrev: 6,
+          freqNow: 4,
+          ticketPrev: 560,
+          ticketNow: 490,
+          claims: 1,
+          satisfaction: 75,
+          engagement: 67,
+        },
+        {
+          ruc: "20133555990",
+          cliente: "Supermercados Costa Verde",
+          zona: "Centro",
+          tipo: "Empresa",
+          nivel: "Estratégico",
+          canal: "Moderno",
+          categoria: "moderno",
+          freqPrev: 8,
+          freqNow: 6,
+          ticketPrev: 2100,
+          ticketNow: 1880,
+          claims: 1,
+          satisfaction: 72,
+          engagement: 70,
+        },
+        {
+          ruc: "20566778111",
+          cliente: "Abarrotes La Flor",
+          zona: "Centro",
+          tipo: "Mayorista",
+          nivel: "Mediano",
+          canal: "Tradicional",
+          categoria: "tradicional",
+          freqPrev: 6,
+          freqNow: 4,
+          ticketPrev: 760,
+          ticketNow: 650,
+          claims: 2,
+          satisfaction: 68,
+          engagement: 58,
+        },
+        {
+          ruc: "20688999001",
+          cliente: "Norte Express",
+          zona: "Norte",
+          tipo: "Distribuidor",
+          nivel: "Grande",
+          canal: "Tradicional",
+          categoria: "tradicional",
+          freqPrev: 7,
+          freqNow: 4,
+          ticketPrev: 1200,
+          ticketNow: 930,
+          claims: 3,
+          satisfaction: 62,
+          engagement: 45,
+        },
+        {
+          ruc: "20544221133",
+          cliente: "Bodega Portal Andino",
+          zona: "Sur",
+          tipo: "Bodega",
+          nivel: "Pequeño",
+          canal: "Tradicional",
+          categoria: "tradicional",
+          freqPrev: 4,
+          freqNow: 2,
+          ticketPrev: 340,
+          ticketNow: 240,
+          claims: 2,
+          satisfaction: 61,
+          engagement: 41,
+        },
+        {
+          ruc: "20199887766",
+          cliente: "Almacenes del Pacífico",
+          zona: "Centro",
+          tipo: "Empresa",
+          nivel: "Estratégico",
+          canal: "Horeca",
+          categoria: "horeca",
+          freqPrev: 9,
+          freqNow: 7,
+          ticketPrev: 2400,
+          ticketNow: 2200,
+          claims: 1,
+          satisfaction: 79,
+          engagement: 73,
+        },
+        {
+          ruc: "20555666778",
+          cliente: "Mayorista Los Pinos",
+          zona: "Centro",
+          tipo: "Mayorista",
+          nivel: "Grande",
+          canal: "Tradicional",
+          categoria: "tradicional",
+          freqPrev: 8,
+          freqNow: 6,
+          ticketPrev: 1360,
+          ticketNow: 1170,
+          claims: 1,
+          satisfaction: 74,
+          engagement: 66,
+        },
+        {
+          ruc: "20622334455",
+          cliente: "Bodegas Unidas del Callao",
+          zona: "Norte",
+          tipo: "Bodega",
+          nivel: "Mediano",
+          canal: "Tradicional",
+          categoria: "tradicional",
+          freqPrev: 5,
+          freqNow: 3,
+          ticketPrev: 520,
+          ticketNow: 410,
+          claims: 3,
+          satisfaction: 60,
+          engagement: 44,
+        },
+        {
+          ruc: "20444556677",
+          cliente: "Restaurante El Molino",
+          zona: "Centro",
+          tipo: "Empresa",
+          nivel: "Grande",
+          canal: "Horeca",
+          categoria: "horeca",
+          freqPrev: 7,
+          freqNow: 5,
+          ticketPrev: 1680,
+          ticketNow: 1390,
+          claims: 2,
+          satisfaction: 66,
+          engagement: 55,
+        },
+        {
+          ruc: "20677889900",
+          cliente: "Hotel Costa Azul",
+          zona: "Sur",
+          tipo: "Empresa",
+          nivel: "Estratégico",
+          canal: "Horeca",
+          categoria: "horeca",
+          freqPrev: 8,
+          freqNow: 5,
+          ticketPrev: 2600,
+          ticketNow: 2010,
+          claims: 3,
+          satisfaction: 58,
+          engagement: 39,
+        },
+      ];
+
+      function generateMockCustomers(count) {
+        const zonas = ["Norte", "Sur", "Centro", "Este"];
+        const tipos = ["Bodega", "Empresa", "Distribuidor", "Mayorista"];
+        const niveles = ["Pequeño", "Mediano", "Grande", "Estratégico"];
+        const canales = ["Tradicional", "Moderno", "Horeca"];
+        const categorias = ["tradicional", "moderno", "horeca"];
+
+        return Array.from({ length: count }, (_, i) => {
+          const idx = i + 1;
+          const nivel = niveles[idx % niveles.length];
+          const freqPrev = 3 + (idx % 7);
+          const freqNow = Math.max(1, freqPrev - (idx % 4));
+          const ticketBase = 220 + (idx % 40) * 32;
+          const ticketDrop = (idx % 5) * 26;
+          const claims = idx % 4;
+          const satisfaction = 55 + (idx % 36);
+          const engagement = 38 + (idx % 52);
+          return {
+            ruc: `20${String(600000000 + idx).slice(0, 9)}`,
+            cliente: `Cliente Simulado ${String(idx).padStart(4, "0")}`,
+            zona: zonas[idx % zonas.length],
+            tipo: tipos[idx % tipos.length],
+            nivel,
+            canal: canales[idx % canales.length],
+            categoria: categorias[idx % categorias.length],
+            freqPrev,
+            freqNow,
+            ticketPrev: ticketBase,
+            ticketNow: Math.max(120, ticketBase - ticketDrop),
+            claims,
+            satisfaction,
+            engagement,
+          };
+        });
+      }
+
+      const customers = [...baseCustomers, ...generateMockCustomers(988)];
+
+      let activeFilters = { zona: "", tipo: "", nivel: "", categoria: "" };
+      let selectedRows = [];
+      let currentStage = 1;
+      let pendingStage = 2;
+      let transformMode = "clean";
+
+      function act(btn) {
+        document
+          .querySelectorAll(".ni")
+          .forEach((item) => item.classList.remove("a", "at"));
+        btn.classList.add("a");
+      }
+
+      function setWorkflowStage(stage) {
+        currentStage = stage;
+        const steps = ["badgeStep1", "badgeStep2", "badgeStep3"];
+        steps.forEach((stepId, index) => {
+          const badge = document.getElementById(stepId);
+          badge.classList.remove("active", "done");
+          if (index + 1 < stage) badge.classList.add("done");
+          if (index + 1 === stage) badge.classList.add("active");
+        });
+
+        document.getElementById("stage1Card").style.display =
+          stage === 1 ? "flex" : "none";
+        document.getElementById("stage2Card").style.display =
+          stage === 2 ? "flex" : "none";
+        document.getElementById("stage3Card").style.display =
+          stage === 3 ? "flex" : "none";
+      }
+
+      function getFilteredCustomers() {
+        return customers.filter((customer) => {
+          return (
+            (!activeFilters.zona ||
+              customer.zona.toLowerCase() === activeFilters.zona) &&
+            (!activeFilters.tipo ||
+              customer.tipo.toLowerCase() === activeFilters.tipo) &&
+            (!activeFilters.nivel ||
+              customer.nivel.toLowerCase() === activeFilters.nivel) &&
+            (!activeFilters.categoria ||
+              customer.categoria === activeFilters.categoria)
+          );
+        });
+      }
+
+      function applyFilters() {
+        activeFilters = {
+          zona: document.getElementById("fZona").value,
+          tipo: document.getElementById("fTipo").value,
+          nivel: document.getElementById("fNivel").value,
+          categoria: document.getElementById("fCategoria").value,
+        };
+
+        selectedRows = getFilteredCustomers();
+        renderLiveTable(selectedRows);
+        renderTransformSummary(selectedRows);
+        renderReport(selectedRows);
+        document.getElementById("liveCount").textContent = String(
+          selectedRows.length,
+        );
+        document.getElementById("liveRows").textContent = String(
+          selectedRows.length,
+        );
+      }
+
+      function renderLiveTable(rows) {
+        const body = document.getElementById("liveTableBody");
+        if (!rows.length) {
+          body.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--tm); padding: var(--sp4);">Sin resultados para los filtros aplicados</td></tr>`;
+          return;
+        }
+
+        const visibleRows = rows.slice(0, 120);
+        const html = visibleRows
+          .map(
+            (row) => `
+            <tr>
+              <td>${row.ruc}</td>
+              <td>${row.cliente}</td>
+              <td>${row.zona}</td>
+              <td>${row.tipo}</td>
+              <td>${row.nivel}</td>
+              <td>${row.canal}</td>
+            </tr>
+          `,
+          )
+          .join("");
+
+        const moreRow =
+          rows.length > visibleRows.length
+            ? `<tr><td colspan="6" style="text-align:center; color: var(--tm);">Mostrando ${visibleRows.length} de ${rows.length} clientes</td></tr>`
+            : "";
+
+        body.innerHTML = html + moreRow;
+      }
+
+      function getRiskLabel(row) {
+        const delta = row.freqNow - row.freqPrev;
+        if (delta <= -2 || row.claims >= 3 || row.satisfaction < 62) {
+          return "Riesgo";
+        }
+        if (delta === -1 || row.engagement < 55) {
+          return "En riesgo";
+        }
+        return "Activo";
+      }
+
+      function isHighValue(row) {
+        return row.nivel === "Estratégico" || row.ticketNow >= 1200;
+      }
+
+      function isLeakSignal(row) {
+        return (
+          row.freqNow < row.freqPrev ||
+          row.engagement < 55 ||
+          row.claims >= 2 ||
+          row.satisfaction < 65
+        );
+      }
+
+      function buildGroups(rows) {
+        const groupMap = new Map();
+        rows.forEach((row) => {
+          let key = `Canal ${row.canal}`;
+          if (transformMode === "segment") key = `${row.canal} · ${row.tipo}`;
+          if (transformMode === "indicators")
+            key = `${row.zona} · ${getRiskLabel(row)}`;
+          if (transformMode === "priority") {
+            key =
+              isHighValue(row) && isLeakSignal(row)
+                ? "Alto valor con fuga"
+                : "Resto cartera";
+          }
+
+          const existing = groupMap.get(key) || { label: key, count: 0 };
+          existing.count += 1;
+          groupMap.set(key, existing);
+        });
+
+        return [...groupMap.values()].sort((a, b) => b.count - a.count);
+      }
+
+      function setTransformMode(mode) {
+        transformMode = mode;
+        document.querySelectorAll(".transform-btn").forEach((button) => {
+          button.classList.toggle("active", button.dataset.mode === mode);
+        });
+        renderTransformSummary(selectedRows);
+        renderReport(selectedRows);
+      }
+
+      function renderTransformSummary(rows) {
+        const groups = buildGroups(rows).slice(0, 5);
+        const maxValue = groups.length ? groups[0].count : 0;
+        const duplicated = Math.floor(rows.length * 0.04);
+        const segments = new Set(rows.map((row) => `${row.canal}-${row.tipo}`))
+          .size;
+
+        document.getElementById("kpiTotal").textContent = String(rows.length);
+        document.getElementById("kpiIndicators").textContent =
+          String(duplicated);
+        document.getElementById("kpiZones").textContent = String(segments);
+
+        const bars = groups
+          .map((group) => {
+            const width = maxValue
+              ? Math.round((group.count / maxValue) * 100)
+              : 0;
+            return `
+              <div class="simple-bar-row">
+                <span>${group.label}</span>
+                <div class="simple-bar-track"><div class="simple-bar-fill" style="width:${width}%"></div></div>
+                <strong>${group.count}</strong>
+              </div>
+            `;
+          })
+          .join("");
+
+        document.getElementById("transformChartBars").innerHTML =
+          bars ||
+          '<div class="empty-state" style="padding:0;"><h3>Sin datos</h3><p>Aplica filtros para generar indicadores y gráfico.</p></div>';
+
+        let note =
+          "Limpieza aplicada: se eliminaron duplicados y se estandarizaron registros.";
+        if (transformMode === "segment") {
+          note =
+            "Segmentación dinámica aplicada por canal y comportamiento comercial.";
+        } else if (transformMode === "indicators") {
+          note = "Filas convertidas a métricas clave para lectura ejecutiva.";
+        } else if (transformMode === "priority") {
+          note =
+            "Cartera priorizada por valor y señales de fuga para atacar primero.";
+        }
+        document.getElementById("transformChartNote").textContent = rows.length
+          ? note
+          : "Aún no hay datos para transformar.";
+      }
+
+      function renderReport(rows) {
+        if (!rows.length) {
+          document.getElementById("reportRequestName").textContent =
+            "0% / 0% / 0%";
+          document.getElementById("reportClientsCount").textContent = "0%";
+          document.getElementById("reportGroupsCount").textContent = "0%";
+          document.getElementById("reportStatus").textContent = "0%";
+          document.getElementById("reportSummaryList").innerHTML =
+            "<li>Sin información para construir recomendaciones.</li>";
+          ["channelBars", "riskHeatmap", "compareBars"].forEach((id) => {
+            document.getElementById(id).innerHTML = "";
+          });
+          document.getElementById("trendChart").innerHTML = "";
+          return;
+        }
+
+        const total = rows.length;
+        let active = 0;
+        let risk = 0;
+        let inactive = 0;
+        let totalFreqPrev = 0;
+        let totalFreqNow = 0;
+        let totalTicketPrev = 0;
+        let totalTicketNow = 0;
+        let totalClaims = 0;
+        let totalSat = 0;
+
+        rows.forEach((row) => {
+          const r = getRiskLabel(row);
+          if (r === "Activo") active += 1;
+          if (r === "En riesgo") risk += 1;
+          if (r === "Riesgo") inactive += 1;
+          totalFreqPrev += row.freqPrev;
+          totalFreqNow += row.freqNow;
+          totalTicketPrev += row.ticketPrev;
+          totalTicketNow += row.ticketNow;
+          totalClaims += row.claims;
+          totalSat += row.satisfaction;
+        });
+
+        const activePct = Math.round((active / total) * 100);
+        const riskPct = Math.round((risk / total) * 100);
+        const inactivePct = Math.round((inactive / total) * 100);
+        const freqVar = Math.round(
+          ((totalFreqNow - totalFreqPrev) / totalFreqPrev) * 100,
+        );
+        const ticketVar = Math.round(
+          ((totalTicketNow - totalTicketPrev) / totalTicketPrev) * 100,
+        );
+        const highValue = rows.filter((row) => isHighValue(row));
+        const highValueLeak = highValue.filter((row) => isLeakSignal(row));
+        const highValueLeakPct = highValue.length
+          ? Math.round((highValueLeak.length / highValue.length) * 100)
+          : 0;
+        const claimsRate = ((totalClaims / total) * 100).toFixed(1);
+        const satisfactionAvg = (totalSat / total).toFixed(1);
+        const reactivationPotential = Math.round((inactive / total) * 100 + 18);
+
+        document.getElementById("reportRequestName").textContent =
+          `${activePct}% / ${riskPct}% / ${inactivePct}%`;
+        document.getElementById("reportClientsCount").textContent =
+          `${freqVar > 0 ? "+" : ""}${freqVar}%`;
+        document.getElementById("reportGroupsCount").textContent =
+          `${ticketVar > 0 ? "+" : ""}${ticketVar}%`;
+        document.getElementById("reportStatus").textContent =
+          `${highValueLeakPct}%`;
+        document.getElementById("reportSubtitle").textContent =
+          `${total} clientes evaluados · reclamos ${claimsRate}% · satisfacción ${satisfactionAvg}`;
+        document.getElementById("reportNotes").textContent =
+          `Potencial de reactivación estimado: ${reactivationPotential}% con foco en canales donde cae frecuencia y suben reclamos.`;
+
+        renderChannelBars(rows);
+        renderTrend(totalFreqNow / total);
+        renderHeatmap(rows);
+        renderCompare(rows);
+
+        document.getElementById("reportSummaryList").innerHTML = `
+          <li><strong>Canal con mayor fuga:</strong> Tradicional presenta mayor concentración de clientes en riesgo e inactivos.</li>
+          <li><strong>Frecuencia de compra:</strong> variación de ${freqVar}% vs período anterior, señal de debilitamiento en cartera media.</li>
+          <li><strong>Ticket promedio:</strong> variación de ${ticketVar}% con mayor caída en segmentos de alto volumen.</li>
+          <li><strong>Reclamos y satisfacción:</strong> reclamos ${claimsRate}% y satisfacción promedio ${satisfactionAvg}, indicando fricción de servicio en grupos críticos.</li>
+          <li><strong>Alto valor con señales de fuga:</strong> ${highValueLeakPct}% de cuentas premium requieren acción prioritaria.</li>
+          <li><strong>Potencial de reactivación:</strong> ${reactivationPotential}% de clientes antes activos tienen alta probabilidad de retorno con estrategia win-back.</li>
+        `;
+      }
+
+      function renderChannelBars(rows) {
+        const channels = ["Tradicional", "Moderno", "Horeca"];
+        const html = channels
+          .map((channel) => {
+            const subset = rows.filter((row) => row.canal === channel);
+            if (!subset.length) {
+              return `<div class="channel-row"><span>${channel}</span><div class="channel-stack"></div><em>0</em></div>`;
+            }
+            let a = 0;
+            let r = 0;
+            let i = 0;
+            subset.forEach((row) => {
+              const label = getRiskLabel(row);
+              if (label === "Activo") a += 1;
+              if (label === "En riesgo") r += 1;
+              if (label === "Riesgo") i += 1;
+            });
+            const total = subset.length;
+            const ap = Math.round((a / total) * 100);
+            const rp = Math.round((r / total) * 100);
+            const ip = Math.max(0, 100 - ap - rp);
+            return `
+              <div class="channel-row">
+                <span>${channel}</span>
+                <div class="channel-stack">
+                  <div class="seg active" style="width:${ap}%"></div>
+                  <div class="seg risk" style="width:${rp}%"></div>
+                  <div class="seg inactive" style="width:${ip}%"></div>
+                </div>
+                <em>A ${ap}% · R ${rp}% · I ${ip}%</em>
+              </div>
+            `;
+          })
+          .join("");
+        document.getElementById("channelBars").innerHTML = html;
+      }
+
+      function renderTrend(avgFreq) {
+        const months = ["Nov", "Dic", "Ene", "Feb", "Mar", "Abr"];
+        const points = [
+          avgFreq + 1.1,
+          avgFreq + 0.7,
+          avgFreq + 0.4,
+          avgFreq + 0.2,
+          avgFreq - 0.1,
+          avgFreq - 0.4,
+        ];
+        const normalized = points.map((value) =>
+          Math.max(1, Math.min(10, value)),
+        );
+        const pathPoints = normalized
+          .map((value, idx) => {
+            const x = 20 + idx * 56;
+            const y = 100 - (value - 1) * 9;
+            return `${x},${y}`;
+          })
+          .join(" ");
+
+        const axisLabels = months
+          .map((month, idx) => {
+            const x = 20 + idx * 56;
+            return `<text x="${x}" y="116" text-anchor="middle" font-size="9" fill="#5b6f5f">${month}</text>`;
+          })
+          .join("");
+
+        const yGuides = [20, 40, 60, 80, 100]
+          .map(
+            (y) =>
+              `<line x1="16" y1="${y}" x2="304" y2="${y}" stroke="rgba(0,0,0,0.08)" stroke-width="1"></line>`,
+          )
+          .join("");
+
+        document.getElementById("trendChart").innerHTML = `
+          ${yGuides}
+          <polyline points="${pathPoints}" fill="none" stroke="#00722a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+          ${pathPoints
+            .split(" ")
+            .map(
+              (point) =>
+                `<circle cx="${point.split(",")[0]}" cy="${point.split(",")[1]}" r="3.2" fill="#0f8d3f"></circle>`,
+            )
+            .join("")}
+          ${axisLabels}
+        `;
+      }
+
+      function renderHeatmap(rows) {
+        const zones = ["Norte", "Sur", "Centro", "Este"];
+        const riskCount = {};
+        zones.forEach((zone) => {
+          riskCount[zone] = rows.filter(
+            (row) => row.zona === zone && getRiskLabel(row) !== "Activo",
+          ).length;
+        });
+        const max = Math.max(...Object.values(riskCount), 1);
+        const html = zones
+          .map((zone) => {
+            const intensity = Math.round((riskCount[zone] / max) * 100);
+            const alpha = (0.12 + intensity / 150).toFixed(2);
+            return `<div class="heat-cell" style="background: rgba(198, 40, 40, ${alpha})"><strong>${zone}</strong><span>${riskCount[zone]} en riesgo</span></div>`;
+          })
+          .join("");
+        document.getElementById("riskHeatmap").innerHTML = html;
+      }
+
+      function renderCompare(rows) {
+        const segments = ["Bodega", "Empresa", "Distribuidor", "Mayorista"];
+        const html = segments
+          .map((segment) => {
+            const subset = rows.filter((row) => row.tipo === segment);
+            if (!subset.length) {
+              return "";
+            }
+            const avgClaims =
+              subset.reduce((sum, row) => sum + row.claims, 0) / subset.length;
+            const avgSat =
+              subset.reduce((sum, row) => sum + row.satisfaction, 0) /
+              subset.length;
+            const claimsW = Math.min(100, Math.round((avgClaims / 3) * 100));
+            const satW = Math.min(100, Math.round(avgSat));
+            return `
+              <div class="compare-row">
+                <span>${segment}</span>
+                <div class="compare-track"><div class="compare-fill claims" style="width:${claimsW}%"></div></div>
+                <div class="compare-track"><div class="compare-fill sat" style="width:${satW}%"></div></div>
+              </div>
+            `;
+          })
+          .join("");
+        document.getElementById("compareBars").innerHTML = html;
+      }
+
+      function openStageConfirm(nextStage) {
+        pendingStage = nextStage;
+        const title = document.getElementById("confirmTitle");
+        const body = document.getElementById("confirmBody");
+        const button = document.getElementById("confirmActionBtn");
+
+        if (nextStage === 2) {
+          title.textContent = "Confirmar paso a Transformar";
+          body.innerHTML = `
+            <div class="summary-row"><strong>Clientes cargados</strong><span>${selectedRows.length}</span></div>
+            <div class="summary-row"><strong>Salida esperada</strong><span>Indicadores + focos de fuga</span></div>
+          `;
+          button.textContent = "Continuar";
+        } else {
+          title.textContent = "Confirmar generación del PDF";
+          body.innerHTML = `
+            <div class="summary-row"><strong>Clientes transformados</strong><span>${selectedRows.length}</span></div>
+            <div class="summary-row"><strong>Resumen</strong><span>Listo para marketing</span></div>
+          `;
+          button.textContent = "Generar PDF";
+        }
+
+        openModal("confirmModal");
+      }
+
+      function confirmStageChange() {
+        closeModal("confirmModal");
+        if (pendingStage === 2) {
+          setWorkflowStage(2);
+          return;
+        }
+
+        openModal("loadingModal");
+        setTimeout(() => {
+          closeModal("loadingModal");
+          setWorkflowStage(3);
+        }, 1300);
+      }
+
+      function sendToMarketing() {
+        activeRequest.status = "Atendida";
+        document.getElementById("requestStatus").textContent = "Atendida";
+        document.getElementById("processModalTitle").textContent =
+          "Reporte Entregado";
+        document.getElementById("processModalBody").innerHTML = `
+          <div class="delivery-success">
+            <div class="delivery-check" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h3>Reporte Entregado</h3>
+            <p>Enviado Correctamente, Marcado como Atendido.</p>
+          </div>
+        `;
+        openModal("processModal");
+      }
+
+      function openModal(id) {
+        document.getElementById(id).classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      document.addEventListener("click", (event) => {
+        if (event.target.classList.contains("modal-overlay")) {
+          event.target.parentElement.classList.remove("active");
+          document.body.style.overflow = "auto";
+        }
+      });
+
+      document.getElementById("requestStatus").textContent =
+        activeRequest.status;
+      document.getElementById("requestArea").textContent = activeRequest.area;
+      document.getElementById("requestObjective").textContent =
+        activeRequest.objective;
+      document.getElementById("requestSegment").textContent =
+        activeRequest.segment;
+      document.getElementById("requestReportName").textContent =
+        activeRequest.reportName;
+      document.getElementById("reportMainTitle").textContent =
+        activeRequest.reportName;
+      document.getElementById("requestDate").textContent = activeRequest.date;
+
+      setTransformMode("clean");
+      applyFilters();
+      setWorkflowStage(1);
+    </script>
+  </body>
+</html>
