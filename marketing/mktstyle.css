@@ -1,0 +1,148 @@
+:root {
+    --heineken-green: #008200;
+    --heineken-dark-green: #005c00;
+    --heineken-red: #ff2b00;
+    --light-gray: #f4f4f4;
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: var(--light-gray);
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: var(--heineken-green);
+    color: var(--white);
+    padding: 20px;
+}
+
+.sidebar .logo h2 {
+    text-align: center;
+    border-bottom: 2px solid var(--heineken-red);
+    padding-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+}
+
+.sidebar nav ul li {
+    padding: 15px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+.sidebar nav ul li.active, .sidebar nav ul li:hover {
+    background-color: var(--heineken-dark-green);
+    border-left: 5px solid var(--heineken-red);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--heineken-red);
+    color: white;
+    padding: 10px 30px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.top-nav {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.nav-btn {
+    padding: 12px 25px;
+    border: none;
+    background-color: var(--heineken-green);
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.nav-btn.active {
+    background-color: var(--heineken-red);
+}
+
+/* Cards & Forms */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: var(--heineken-red);
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.field label { display: block; font-weight: bold; margin-bottom: 5px; }
+.field input, .field select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group label {
+    display: block;
+    margin-top: 10px;
+}
+
+.form-group input {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background: #e9e9e9;
+    border: none;
+}
+
+/* Buttons */
+.btn {
+    margin-top: 15px;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    display: block;
+    margin-left: auto;
+}
+
+.btn-save { background-color: #28a745; }
+.btn-edit { background-color: var(--heineken-green); }
