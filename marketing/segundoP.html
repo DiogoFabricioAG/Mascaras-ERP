@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heineken ERP — Estrategia de Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g: #1d6b34;    
+  --w: #ffffff;    
+  --tan: #f0b429;  
+  --sp6: 24px;
+  --gray-bg: #f2f5f2;
+  --border: #e2e8e2;
+  --black: #111111;
+  --gray-text: #6b6b6b;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans', sans-serif; background:var(--gray-bg); color:var(--black); display:flex; flex-direction:column; height:100vh; overflow:hidden; }
+
+/* HEADER */
+.hd {
+  background: var(--g);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp6);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+.hd-logo { display: flex; align-items: center; gap: 12px; color: var(--w); text-decoration: none; }
+.hd-logo-mark { width: 44px; height: 44px; display: block; border-radius: 10px; background: #000; padding: 4px; flex-shrink: 0; }
+.hd-logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+.hd-logo-t { font-size: 18px; font-weight: 700; color: var(--w); }
+.hd-r { display: flex; align-items: center; gap: 16px; }
+.hd-usr { display: flex; align-items: center; gap: 8px; color: var(--w); font-size: 13px; font-weight: 500; border: none; background: none; }
+.hd-av { width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.25); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--w); border: 2px solid rgba(255, 255, 255, 0.4); }
+
+/* LAYOUT */
+.main-wrapper { display: flex; flex: 1; overflow: hidden; }
+.sidebar { width: 220px; background: #0d3318; color: white; display: flex; flex-direction: column; flex-shrink: 0; }
+.sb-item { padding: 15px 24px; font-size: 13px; cursor: pointer; color: rgba(255,255,255,0.7); border-left: 4px solid transparent; }
+.sb-item.active { background: rgba(255,255,255,0.1); color: white; border-left-color: var(--g); }
+
+.content { flex: 1; padding: 30px; overflow-y: auto; }
+.card { background: white; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 25px; overflow: hidden; }
+.card-hdr { padding: 15px 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; background: var(--g); color: white; text-align: center; }
+.card-body { padding: 25px; }
+
+/* FORMS */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: var(--gray-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.field { display: flex; flex-direction: column; }
+.label { font-size: 10px; font-weight: 700; color: var(--black); text-transform: uppercase; margin-bottom: 8px; text-align: center; }
+
+select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: white; outline: none; cursor: pointer; }
+select:focus { border-color: var(--g); }
+
+.map-box { border-radius: 12px; height: 280px; background: #2c3e50; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1.5px solid var(--border); position: relative;}
+
+/* BUTTONS */
+.btn { padding: 12px 24px; border-radius: 6px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-primary { background: var(--g); color: white; }
+.btn-outline { background: white; border: 1px solid var(--border); color: var(--gray-text); }
+.btn-success { background: #2d8a48; color: white; }
+
+.alert-s { background: #e6f4eb; border: 1px solid var(--g); color: var(--g); padding: 15px; border-radius: 8px; font-size: 13px; margin-top: 20px; display: none; text-align: center; font-weight: 600; }
+.outputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+.out-box { background: var(--gray-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); }
+
+/* MODAL */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 200; align-items: center; justify-content: center; }
+.overlay.open { display: flex; }
+.modal { background: white; border-radius: 12px; width: 90%; max-width: 420px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.2); text-align: center; }
+.modal-body { padding: 30px 25px; }
+.modal-btns { display: flex; gap: 10px; margin-top: 25px; }
+</style>
+</head>
+<body>
+
+<header class="hd">
+    <a href="#" class="hd-logo">
+        <div class="hd-logo-mark"><img src="../logo.png" alt="Logo"></div>
+        <span class="hd-logo-t">Heineken ERP</span>
+    </a>
+    <div class="hd-r">
+        <button class="hd-usr"><span>Juan Ramírez</span><div class="hd-av">JR</div></button>
+    </div>
+</header>
+
+<div class="main-wrapper">
+    <nav class="sidebar">
+        <div class="sb-item active">Marketing</div>
+        <div class="sb-item">Ventas</div>
+        <div class="sb-item">CRM</div>
+        <div class="sb-item">Estadísticas</div>
+    </nav>
+
+    <main class="content">
+        <div style="margin-bottom: 25px;">
+            <h1 style="font-size: 22px; font-weight: 700;">Configuración de Estrategia: Heineken</h1>
+            <p style="font-size: 13px; color: var(--gray-text);">Definición de mercado meta y plantillas estratégicas de marca</p>
+        </div>
+
+        <div class="card">
+            <div class="card-hdr">1. Registrar Mercado Meta</div>
+            <div class="card-body">
+                <div class="grid-3">
+                    <div class="field">
+                        <label class="label">Rango de Edad Objetivo</label>
+                        <select>
+                            <option>18-25 años (Jóvenes Estudiantes / Gen Z)</option>
+                            <option selected>25-35 años (Jóvenes Profesionales / Millennials)</option>
+                            <option>35-45 años (Adultos Contemporáneos)</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="label">Distrito de Enfoque (Lima)</label>
+                        <select id="map-selector">
+                            <option value="Miraflores" selected>Miraflores (Zona Turística/Comercial)</option>
+                            <option value="San Isidro">San Isidro (Zona Corporativa/After Office)</option>
+                            <option value="Barranco">Barranco (Zona Bohemia/Nocturna)</option>
+                            <option value="Surco">Surco (Zona Residencial/Moderna)</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="label">Nivel Socioeconómico</label>
+                        <select>
+                            <option selected>A - B (Premium / Aspiracional)</option>
+                            <option>B - C (Mainstream / Volumen)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="map-box">
+                    <svg width="100%" height="100%" viewBox="0 0 800 280">
+                        <rect width="800" height="280" fill="#b5cf98" opacity="0.4"/>
+                        <path d="M 100 50 Q 400 150 700 50" stroke="#fff" stroke-width="8" fill="none" opacity="0.6"/>
+                        <circle cx="380" cy="140" r="70" fill="#1d6b34" opacity="0.7"/>
+                        <circle cx="350" cy="120" r="15" fill="#e74c3c" opacity="0.9"/>
+                        <circle cx="410" cy="160" r="12" fill="#e74c3c" opacity="0.9"/>
+                        <circle cx="390" cy="110" r="18" fill="#e74c3c" opacity="0.9"/>
+                        <text x="400" y="240" text-anchor="middle" fill="#1d6b34" font-weight="bold" font-size="14">Análisis de Sector Activo: Puntos On-Trade (Bares/Restaurantes)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-hdr">2. Registrar las Estrategias</div>
+            <div class="card-body">
+                <div class="two-col">
+                    <div class="field">
+                        <label class="label">Estrategia de Posicionamiento</label>
+                        <select>
+                            <option selected>Marca Cosmopolita, Premium y Vanguardista</option>
+                            <option>Asociación Global (Deportes: UEFA Champions League / F1)</option>
+                            <option>Socialización Responsable y Ocasiones Especiales</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="label">Propuesta de Valor</label>
+                        <select>
+                            <option>Sabor Superior (Receta Original Ámsterdam, Malta A)</option>
+                            <option selected>Innovación en Consumo (Ej. Heineken 0.0, Draft)</option>
+                            <option>Experiencia de Estatus y Exclusividad</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="label">Características a Diferenciar</label>
+                        <select>
+                            <option selected>Identidad Visual (Botella Verde Icónica / Estrella Roja)</option>
+                            <option>Ingredientes (100% Ingredientes Naturales / Levadura A)</option>
+                            <option>Compromiso Sostenible (Iniciativa "Brew a Better World")</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="label">Estrategia de Precios</label>
+                        <select>
+                            <option selected>Precio Premium (Markup sobre marcas locales)</option>
+                            <option>Paridad Premium (Alineado con portafolio importado)</option>
+                            <option>Penetración Cautiva (Promociones cruzadas en On-Trade)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding-bottom: 50px;">
+            <button class="btn btn-primary" style="padding: 14px 80px;" onclick="openModal()">Confirmar y Guardar ◆</button>
+            
+            <div id="success-msg" class="alert-s">✓ Estrategia Heineken guardada exitosamente en la Base de Datos de Marketing.</div>
+
+            <div id="output-sec" style="display: none; margin-top: 25px; text-align: left;">
+                <div class="outputs">
+                    
+                    <div class="out-box">
+                        <strong style="color: var(--g); display: block; margin-bottom: 5px;">Brief Estratégico (PDF)</strong>
+                        <p style="font-size: 11px; color: var(--gray-text);">Descargue el resumen oficial de posicionamiento y target para agencias.</p>
+                        <button class="btn btn-success" style="width: 100%; margin-top: 10px;">Descargar Brief PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="overlay" id="modal">
+    <div class="modal">
+        <div class="modal-body">
+            <div style="font-size: 40px; margin-bottom: 15px;">📊</div>
+            <h3>¿Finalizar Configuración Estratégica?</h3>
+            <p>Las directrices de posicionamiento, precios y mercado meta de <strong>Heineken</strong> se guardarán en el sistema central para ejecución.</p>
+            <div class="modal-btns">
+                <button class="btn btn-outline" style="flex: 1;" onclick="closeModal()">Revisar</button>
+                <button class="btn btn-primary" style="flex: 1;" onclick="confirm()">Sí, Guardar Estrategia</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() { document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+    function confirm() {
+        closeModal();
+        document.getElementById('success-msg').style.display = 'block';
+        document.getElementById('output-sec').style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
