@@ -3,604 +3,577 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heineken ERP - Módulo Marketing</title>
+<title>Desarrollo de investigación de mercado — Marketing Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f0; min-height: 100vh; }
+:root {
+  --green-dark:#0d3318; --green-brand:#1d6b34; --green-light:#e6f4eb;
+  --black:#111111; --gray-text:#6b6b6b; --gray-bg:#f2f5f2;
+  --white:#ffffff; --border:#e2e8e2; --radius:8px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans', sans-serif; background:var(--gray-bg); color:var(--black); display:flex; height:100vh; overflow:hidden; }
 
-  /* LAYOUT */
-  .app { display: flex; flex-direction: column; min-height: 100vh; }
-  .topbar {
-    background: #00703C;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    height: 56px;
-    flex-shrink: 0;
-  }
-  .topbar-logo { display: flex; align-items: center; gap: 10px; }
-  .topbar-logo img { height: 34px; filter: brightness(0) invert(1); }
-  .topbar-logo span { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; color: white; }
-  .topbar-title { font-size: 16px; font-weight: 600; }
-  .topbar-user { width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-  .topbar-user svg { width: 20px; height: 20px; fill: white; }
+/* SIDEBAR */
+.sidebar { width:220px; background:var(--green-dark); color:white; display:flex; flex-direction:column; flex-shrink:0; }
+.logo-area { padding:20px; font-weight:700; font-size:14px; display:flex; align-items:center; gap:10px; background:var(--black); }
+.logo-icon { width:24px; height:24px; background:var(--green-brand); border-radius:4px; }
+.sb-label { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; padding:20px 20px 10px; letter-spacing:1px; }
+.sb-item { padding:12px 20px; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:10px; color:rgba(255,255,255,0.7); transition:0.2s; }
+.sb-item.active { background:rgba(255,255,255,0.1); color:white; border-left:4px solid var(--green-brand); }
 
-  .main { display: flex; flex: 1; }
+/* MAIN CONTENT */
+.main { flex:1; display:flex; flex-direction:column; overflow-y:auto; }
+.topbar { height:52px; background:var(--white); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:flex-end; padding:0 25px; gap:20px; }
+.user-info { font-size:12px; text-align:right; }
+.user-name { font-weight:700; }
+.avatar { width:32px; height:32px; background:var(--green-brand); border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
 
-  /* SIDEBAR */
-  .sidebar {
-    width: 200px;
-    background: #00703C;
-    flex-shrink: 0;
-    padding-top: 16px;
-  }
-  .sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 20px;
-    color: rgba(255,255,255,0.75);
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background 0.15s;
-  }
-  .sidebar-item:hover { background: rgba(255,255,255,0.1); }
-  .sidebar-item.active { background: rgba(255,255,255,0.18); color: white; }
-  .sidebar-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+.container { padding:25px; max-width:1200px; margin:0 auto; width:100%; }
 
-  /* CONTENT */
-  .content { flex: 1; padding: 28px 32px; overflow-y: auto; }
+/* CARDS */
+.card { background:white; border:1px solid var(--border); border-radius:var(--radius); margin-bottom:20px; box-shadow:0 2px 4px rgba(0,0,0,0.02); }
+.card-hdr { padding:12px 20px; font-size:11px; font-weight:700; text-transform:uppercase; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
+.card-body { padding:20px; }
 
-  /* SUBNAV */
-  .subnav { display: flex; gap: 10px; margin-bottom: 24px; }
-  .subnav-btn {
-    padding: 8px 18px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.15s;
-  }
-  .subnav-btn.active { background: #00703C; color: white; }
-  .subnav-btn.inactive { background: #e0e0da; color: #555; }
-  .subnav-btn.inactive:hover { background: #d0d0ca; }
+.field { margin-bottom:15px; }
+input { width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa; }
+.field-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start; }
+.field-grid .field { margin-bottom:0; }
+.preview-box { white-space:pre-wrap; font-size:13px; color:var(--gray-text); line-height:1.6; }
 
-  /* SECTIONS */
-  .section-header {
-    background: #00703C;
-    color: white;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 8px 16px;
-    border-radius: 6px 6px 0 0;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .section-body {
-    background: #f0f0eb;
-    border: 1px solid #d5d5ce;
-    border-top: none;
-    border-radius: 0 0 6px 6px;
-    padding: 16px;
-  }
-  .section-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end; }
+/* BUTTONS */
+.btn { padding:8px 18px; border-radius:4px; border:none; font-size:12px; font-weight:700; cursor:pointer; transition:0.2s; display:inline-flex; align-items:center; gap:8px; }
+.btn-primary { background:var(--green-dark); color:white; }
+.btn-outline { background:white; border:1px solid var(--border); color:var(--black); }
+.btn-success { background:#1d6b34; color:white; }
 
-  /* FORM ELEMENTS */
-  label { font-size: 12px; font-weight: 600; color: #444; display: block; margin-bottom: 4px; }
-  input[type="text"], select, textarea {
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 6px 10px;
-    font-size: 13px;
-    color: #333;
-    width: 100%;
-    outline: none;
-  }
-  input[type="text"]:focus, select:focus { border-color: #00703C; }
-  textarea { resize: vertical; min-height: 60px; }
-  .field { display: flex; flex-direction: column; min-width: 120px; }
-  .field-value {
-    background: #e8e8e3;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 6px 10px;
-    font-size: 13px;
-    color: #333;
-  }
+/* ALERT */
+.alert-success { background:var(--green-light); border:1px solid var(--green-brand); color:var(--green-brand); padding:12px; border-radius:4px; font-size:12px; margin:15px 0; display:none; }
 
-  /* BUTTONS */
-  .btn {
-    padding: 8px 20px;
-    border-radius: 5px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: all 0.15s;
-  }
-  .btn-green { background: #00703C; color: white; }
-  .btn-green:hover { background: #005a30; }
-  .btn-red { background: #c0392b; color: white; }
-  .btn-red:hover { background: #a93226; }
-  .btn-gray { background: #888; color: white; }
-  .btn-gray:hover { background: #666; }
-  .btn-outline { background: white; color: #333; border: 1px solid #ccc; }
-  .btn-outline:hover { background: #f0f0ea; }
-  .btn-row { display: flex; gap: 10px; margin-top: 16px; }
-  .btn-row.center { justify-content: center; }
-
-  /* TWO COLUMN PANELS */
-  .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-  .panel { background: #f0f0eb; border: 1px solid #d5d5ce; border-radius: 6px; overflow: hidden; }
-  .panel-header { background: #00703C; color: white; font-size: 12px; font-weight: 700; padding: 7px 14px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .panel-body { padding: 14px; }
-
-  /* QUESTION LIST */
-  .q-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .q-label { font-size: 13px; font-weight: 500; min-width: 90px; color: #444; }
-  .q-input { flex: 1; background: #e8e8e3; border: 1px solid #ccc; border-radius: 4px; padding: 5px 8px; font-size: 12px; color: #777; }
-  .q-add { text-align: center; margin-top: 8px; }
-  .q-add-btn { background: white; border: 1px dashed #aaa; color: #888; font-size: 18px; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
-
-  /* MAP placeholder */
-  .map-placeholder {
-    background: #d8e8d0;
-    border: 1px solid #b0c8b0;
-    border-radius: 6px;
-    height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #5a8a5a;
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .map-grid { position: absolute; inset: 0; opacity: 0.3; }
-
-  /* TABLE */
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { background: white; font-weight: 700; font-size: 12px; padding: 8px 10px; text-align: left; border-bottom: 2px solid #d5d5ce; color: #333; }
-  td { padding: 8px 10px; border-bottom: 1px solid #e5e5de; color: #444; }
-  tr:hover td { background: #f8f8f4; }
-  .table-wrap { background: white; border-radius: 6px; border: 1px solid #d5d5ce; overflow: hidden; }
-
-  /* MODAL OVERLAY */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: #f5f5f0;
-    border-radius: 10px;
-    min-width: 340px;
-    max-width: 420px;
-    width: 90%;
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  }
-  .modal-header { background: #00703C; color: white; font-size: 13px; font-weight: 700; padding: 10px 18px; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
-  .modal-body { padding: 20px 24px; }
-  .modal-field { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .modal-field label { min-width: 90px; font-size: 13px; font-weight: 600; color: #444; margin: 0; }
-  .modal-field input, .modal-field select, .modal-field textarea { flex: 1; }
-  .modal-field .code-val { background: #e8e8e3; border: 1px solid #ccc; border-radius: 4px; padding: 6px 10px; font-size: 13px; color: #555; flex: 1; }
-
-  /* PRICE CALC */
-  .calc-field { font-size: 13px; color: #555; }
-
-  /* CONFORME DIALOG */
-  .conforme-btns { display: flex; gap: 16px; justify-content: center; margin-top: 16px; }
-  .btn-si { background: #f0b429; color: #7a4f00; font-weight: 700; font-size: 18px; padding: 12px 36px; border-radius: 6px; border: none; cursor: pointer; }
-  .btn-no { background: #c0392b; color: white; font-weight: 700; font-size: 18px; padding: 12px 36px; border-radius: 6px; border: none; cursor: pointer; }
-
-  /* VIEW TOGGLE */
-  .view { display: none; }
-  .view.active { display: block; }
-
-  /* PLAZAS INFO */
-  .plaza-info { background: white; border: 1px solid #d5d5ce; border-radius: 6px; padding: 14px; margin-top: 16px; }
-  .plaza-info-title { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 8px; }
-  .plaza-info-body { display: flex; gap: 16px; font-size: 12px; color: #555; line-height: 1.7; }
-  .plaza-info-col { flex: 1; }
-  .plaza-info-map { width: 120px; height: 80px; background: #d0d8c8; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #5a7a5a; flex-shrink: 0; }
-
-  .page-title { font-size: 16px; font-weight: 700; color: #00703C; margin-bottom: 12px; letter-spacing: 0.5px; }
-
-  /* REGISTRO PRODUCTO GRID */
-  .prod-info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: end; }
-
-  .section-wrap { margin-bottom: 20px; }
+/* SALIDAS SECTION */
+.outputs { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:15px; }
+.out-box { background:var(--gray-bg); padding:15px; border-radius:6px; border:1px solid var(--border); }
+.out-title { font-size:12px; font-weight:700; color:var(--green-brand); margin-bottom:5px; }
+.out-text { font-size:11px; color:var(--gray-text); line-height:1.5; margin-bottom:12px; }
 </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="topbar-logo">
-      <svg viewBox="0 0 100 40" style="height:32px;fill:white;" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="30" font-family="Arial" font-weight="900" font-size="28" fill="white">heineken</text>
-      </svg>
-    </div>
-    <div class="topbar-title">Bienvenido [Usuario] al ERP</div>
-    <div class="topbar-user">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
-    </div>
-  </div>
-
-  <div class="main">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="sidebar-item active" onclick="switchModule('marketing')">
-        <svg viewBox="0 0 24 24" fill="white"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-        Marketing
-      </div>
-      <div class="sidebar-item" onclick="switchModule('ventas')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-        Ventas
-      </div>
-      <div class="sidebar-item">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
-        CRM
-      </div>
-      <div class="sidebar-item">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-        Estadísticas
-      </div>
-    </div>
-
-    <!-- CONTENT -->
-    <div class="content">
-
-      <!-- SUBNAV -->
-      <div class="subnav">
-        <button class="subnav-btn active" id="btn-inv" onclick="showTab('investigacion')">Investigación de mercado</button>
-        <button class="subnav-btn inactive" id="btn-meta" onclick="showTab('mercadometa')">Mercado Meta</button>
-        <button class="subnav-btn inactive" id="btn-prog" onclick="showTab('programacion')">Programación marketing</button>
-      </div>
-
-      <!-- ========== VISTA 1: INVESTIGACIÓN DE MERCADO ========== -->
-      <div class="view active" id="view-investigacion">
-
-        <div class="section-wrap">
-          <div class="section-header">Definición del método de investigación</div>
-          <div class="section-body">
-            <div class="section-row">
-              <div class="field">
-                <label>Código</label>
-                <div class="field-value">IM-00023</div>
-              </div>
-              <div class="field" style="min-width:160px;">
-                <label>Tipo</label>
-                <select><option>Encuesta</option><option>Entrevista</option><option>Focus Group</option><option>Observación</option></select>
-              </div>
-              <div class="field" style="min-width:160px;">
-                <label>Canal</label>
-                <select><option>Instagram</option><option>Facebook</option><option>WhatsApp</option><option>Email</option><option>Presencial</option></select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel-grid">
-          <!-- Registro Preguntas -->
-          <div class="panel">
-            <div class="panel-header">Registro de preguntas</div>
-            <div class="panel-body">
-              <div class="q-row"><span class="q-label">Pregunta 1:</span><input class="q-input" type="text" placeholder="P01" /></div>
-              <div class="q-row"><span class="q-label">Pregunta 2:</span><input class="q-input" type="text" placeholder="P02" /></div>
-              <div class="q-row"><span class="q-label">Pregunta 3:</span><input class="q-input" type="text" placeholder="P03" /></div>
-              <div class="q-row"><span class="q-label">Pregunta 4:</span><input class="q-input" type="text" placeholder="P04" /></div>
-              <div class="q-add"><button class="q-add-btn" onclick="addQuestion('preguntas')">+</button></div>
-              <div class="btn-row"><button class="btn btn-green">Guardar</button></div>
-            </div>
-          </div>
-
-          <!-- Registro Respuestas -->
-          <div class="panel">
-            <div class="panel-header">Registro de preguntas</div>
-            <div class="panel-body">
-              <div class="field" style="margin-bottom:10px; max-width:180px;">
-                <label>Encuesta</label>
-                <select><option>Encuesta 01</option><option>Encuesta 02</option></select>
-              </div>
-              <div class="q-row"><span class="q-label">Respuesta 1:</span><input class="q-input" type="text" placeholder="P01" /></div>
-              <div class="q-row"><span class="q-label">Respuesta 2:</span><input class="q-input" type="text" placeholder="P02" /></div>
-              <div class="q-row"><span class="q-label">Respuesta 3:</span><input class="q-input" type="text" placeholder="P03" /></div>
-              <div class="q-row"><span class="q-label">Respuesta 4:</span><input class="q-input" type="text" placeholder="P04" /></div>
-              <div class="q-add"><button class="q-add-btn">+</button></div>
-              <div class="btn-row"><button class="btn btn-green">Editar</button></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ========== VISTA 2: MERCADO META ========== -->
-      <div class="view" id="view-mercadometa">
-        <div class="section-wrap">
-          <div class="section-header">Mercado Meta</div>
-          <div class="section-body">
-            <div class="section-row">
-              <div class="field">
-                <label>Rango de Edad</label>
-                <input type="text" value="18-35" style="max-width:100px;" />
-              </div>
-              <div class="field" style="min-width:160px;">
-                <label>Distritos</label>
-                <select>
-                  <option>Distrito X</option><option>Miraflores</option><option>San Isidro</option><option>Barranco</option><option>Surco</option>
-                </select>
-              </div>
-              <div class="field" style="min-width:140px;">
-                <label>Nivel Socioeconómico</label>
-                <select><option>A</option><option>B</option><option>C</option><option>D</option></select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="map-placeholder">
-          <svg width="100%" height="100%" style="position:absolute;inset:0;" viewBox="0 0 600 220" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <rect width="600" height="220" fill="#c8dfc0"/>
-            <path d="M0 80 Q150 60 300 90 Q450 120 600 85" stroke="#a0c898" stroke-width="18" fill="none" opacity="0.6"/>
-            <rect x="80" y="40" width="200" height="140" rx="8" fill="#b5cf98" opacity="0.5"/>
-            <rect x="220" y="60" width="160" height="100" rx="6" fill="#9aba80" opacity="0.5"/>
-            <line x1="0" y1="110" x2="600" y2="110" stroke="white" stroke-width="3" stroke-dasharray="8,6" opacity="0.5"/>
-            <line x1="300" y1="0" x2="300" y2="220" stroke="white" stroke-width="3" stroke-dasharray="8,6" opacity="0.5"/>
-            <circle cx="200" cy="100" r="10" fill="#00703C" opacity="0.8"/>
-            <circle cx="350" cy="130" r="8" fill="#c0392b" opacity="0.7"/>
-            <circle cx="420" cy="75" r="8" fill="#00703C" opacity="0.8"/>
-            <circle cx="130" cy="145" r="8" fill="#00703C" opacity="0.8"/>
-            <rect x="150" y="158" width="12" height="16" rx="1" fill="#5a5a8a" opacity="0.6"/>
-            <polygon points="156,148 162,158 150,158" fill="#5a5a8a" opacity="0.6"/>
-            <text x="300" y="200" text-anchor="middle" font-size="13" fill="#3a6a3a" font-weight="600" font-family="Arial">Vista del Distrito seleccionado</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- ========== VISTA 3: PROGRAMACIÓN MARKETING (Productos / Plazas) ========== -->
-      <div class="view" id="view-programacion">
-
-        <!-- Tabs internos -->
-        <div style="display:flex;gap:8px;margin-bottom:20px;">
-          <button class="btn btn-green" id="prog-tab-prod" onclick="showProgTab('productos')">Registrar Producto</button>
-          <button class="btn btn-outline" id="prog-tab-plazas" onclick="showProgTab('plazas')">Plazas</button>
-        </div>
-
-        <!-- SUB-VISTA: Registrar Producto -->
-        <div id="prog-productos" class="view active">
-          <div class="section-wrap">
-            <div class="section-header">Registrar Producto</div>
-            <div class="section-body">
-              <div class="prod-info-grid">
-                <div class="field">
-                  <label>Código</label>
-                  <div class="field-value">P-01024</div>
-                </div>
-                <div class="field">
-                  <label>Nombre</label>
-                  <div class="field-value">Heineken Lager</div>
-                </div>
-                <div class="field">
-                  <label>Tipo</label>
-                  <div class="field-value">Cerveza</div>
-                </div>
-              </div>
-              <div class="btn-row" style="justify-content:flex-end;">
-                <button class="btn btn-green" onclick="openModal('modal-mod-prod')">Editar</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="panel-grid">
-            <!-- Consultar Precio -->
-            <div class="panel">
-              <div class="panel-header">Consultar Precio</div>
-              <div class="panel-body">
-                <div class="q-row"><span class="q-label" style="min-width:100px;">Precio base</span><input class="q-input" type="text" value="30.00" /></div>
-                <div class="q-row"><span class="q-label" style="min-width:100px;">Cantidad</span><input class="q-input" type="text" placeholder="" /></div>
-                <div class="q-row"><span class="q-label" style="min-width:100px;">Precio total</span><input class="q-input" type="text" placeholder="" /></div>
-                <div class="q-row"><span class="q-label" style="min-width:100px;">Descuento</span><input class="q-input" type="text" value="100.00" /></div>
-                <div class="q-row"><span class="q-label" style="min-width:100px;">Precio final</span><input class="q-input" type="text" placeholder="" /></div>
-                <div class="btn-row"><button class="btn btn-green" onclick="openModal('modal-mod-precio')">Editar</button></div>
-              </div>
-            </div>
-
-            <!-- Asignar Plaza -->
-            <div class="panel">
-              <div class="panel-header">Asignar Plaza</div>
-              <div class="panel-body">
-                <div class="q-row"><span class="q-label" style="min-width:90px;">Código</span><input class="q-input" type="text" value="PL-01024" /></div>
-                <div class="q-row"><span class="q-label" style="min-width:90px;">Tipo plaza</span><input class="q-input" type="text" placeholder="" /></div>
-                <div class="q-row"><span class="q-label" style="min-width:90px;">Ubicación</span><input class="q-input" type="text" placeholder="" /></div>
-                <div class="q-row"><span class="q-label" style="min-width:90px;">Descripción</span><input class="q-input" type="text" placeholder="" /></div>
-                <div class="btn-row"><button class="btn btn-green" onclick="openModal('modal-mod-plaza')">Editar</button></div>
-              </div>
-            </div>
-          </div>
-          <div class="btn-row center" style="margin-top:20px;"><button class="btn btn-green" style="padding:10px 40px;font-size:14px;">Guardar</button></div>
-        </div>
-
-        <!-- SUB-VISTA: Plazas -->
-        <div id="prog-plazas" class="view">
-          <div class="page-title">PLAZAS</div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>ID-Plaza</th><th>Nombre</th><th>Ubicación</th><th>Teléfono</th><th>Estado</th></tr></thead>
-              <tbody>
-                <tr><td>PL-01024</td><td>Heineken Lima Norte</td><td>Los Olivos</td><td>987-654-321</td><td>Activo</td></tr>
-                <tr><td>PL-01025</td><td>Heineken Miraflores</td><td>Miraflores</td><td>987-654-322</td><td>Activo</td></tr>
-                <tr><td>PL-01026</td><td>Heineken Surco</td><td>Santiago de Surco</td><td>987-654-323</td><td>Inactivo</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="btn-row" style="margin-top:12px;">
-            <button class="btn btn-red">Registrar Plaza</button>
-            <button class="btn btn-outline" onclick="openModal('modal-elim-plaza')">Eliminar Plaza</button>
-          </div>
-
-          <div class="plaza-info">
-            <div style="background:#e8e8e3;padding:6px 12px;font-size:12px;font-weight:700;color:#555;border-radius:4px;margin-bottom:10px;display:inline-block;">Información de la Plaza</div>
-            <div style="font-size:13px;font-weight:700;color:#333;margin-bottom:8px;">HEINEKEN LIMA NORTE</div>
-            <div class="plaza-info-body">
-              <div class="plaza-info-col">
-                <div style="color:#777;line-height:1.8;font-size:12px;">
-                  Av. Universitaria 1245, Los Olivos<br>
-                  Lima, Perú. CP 15301<br>
-                  Tel: 987-654-321<br>
-                  Email: limanorte@heineken.pe<br>
-                  Horario: Lun-Sáb 9:00-18:00
-                </div>
-              </div>
-              <div class="plaza-info-col">
-                <div style="color:#777;line-height:1.8;font-size:12px;">
-                  Gerente: Carlos Mendoza<br>
-                  Capacidad: 500 unid/día<br>
-                  Estado: Operativo<br>
-                  NSE objetivo: B, C<br>
-                  Zona cobertura: Lima Norte
-                </div>
-              </div>
-              <div class="plaza-info-map">
-                <svg viewBox="0 0 100 70" width="120" height="80" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="100" height="70" fill="#b8ccb0" rx="3"/>
-                  <rect x="10" y="10" width="35" height="50" rx="2" fill="#98b890" opacity="0.7"/>
-                  <rect x="55" y="20" width="35" height="35" rx="2" fill="#98b890" opacity="0.7"/>
-                  <line x1="45" y1="0" x2="45" y2="70" stroke="white" stroke-width="2"/>
-                  <line x1="0" y1="35" x2="100" y2="35" stroke="white" stroke-width="2"/>
-                  <circle cx="45" cy="35" r="6" fill="#00703C"/>
-                </svg>
-              </div>
-              <button class="btn btn-green" style="align-self:flex-end;" onclick="openModal('modal-mod-plaza')">Actualizar plaza</button>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /view-programacion -->
-
-    </div><!-- /content -->
-  </div><!-- /main -->
-</div><!-- /app -->
-
-<!-- ===== MODALES ===== -->
-
-<!-- Modal: Modificar Producto -->
-<div class="modal-overlay" id="modal-mod-prod">
-  <div class="modal">
-    <div class="modal-header">Modificar Producto</div>
-    <div class="modal-body">
-      <div class="modal-field"><label>Código</label><div class="code-val">P-01024</div></div>
-      <div class="modal-field"><label>Nombre</label><input type="text" placeholder="Heineken Lager" /></div>
-      <div class="modal-field"><label>Tipo</label><input type="text" placeholder="Cerveza" /></div>
-      <div class="modal-field"><label>Stock</label><input type="text" placeholder="" /></div>
-      <div class="modal-field"><label>Imagen</label><input type="text" placeholder="URL imagen" /></div>
-      <div class="modal-field"><label>Descripción</label><textarea></textarea></div>
-      <div class="btn-row center">
-        <button class="btn btn-gray" onclick="closeModal('modal-mod-prod')">Cancelar</button>
-        <button class="btn btn-green" onclick="closeModal('modal-mod-prod')">Guardar</button>
-      </div>
-    </div>
-  </div>
+<div class="sidebar">
+    <div class="logo-area"><div class="logo-icon"></div> Heineken ERP</div>
+    <div class="sb-label">Módulos</div>
+    <div class="sb-item active">Marketing</div>
+    <div class="sb-item">Ventas</div>
+    <div class="sb-item">CRM</div>
+    <div class="sb-item">Estadísticas</div>
 </div>
 
-<!-- Modal: Modificar Precio -->
-<div class="modal-overlay" id="modal-mod-precio">
-  <div class="modal">
-    <div class="modal-header">Modificar Precio</div>
-    <div class="modal-body">
-      <div class="modal-field"><label>Producto</label><div class="code-val">P-01024</div></div>
-      <div class="modal-field"><label>Precio base</label><input type="text" placeholder="" /></div>
-      <div class="modal-field"><label>Rango</label><select><option>Nacional</option><option>Regional</option><option>Local</option></select></div>
-      <div class="modal-field"><label>Descuento %</label><select><option>0%</option><option>5%</option><option>10%</option><option>15%</option><option>20%</option></select></div>
-      <div class="modal-field"><label>Fecha</label><input type="text" placeholder="DD/MM/AAAA" /></div>
-      <div class="modal-field"><label>Descripción</label><textarea></textarea></div>
-      <div class="btn-row center">
-        <button class="btn btn-gray" onclick="closeModal('modal-mod-precio')">Cancelar</button>
-        <button class="btn btn-green" onclick="closeModal('modal-mod-precio')">Guardar</button>
-      </div>
+<div class="main">
+    <div class="topbar">
+        <div class="user-info">
+            <div class="user-name">Juan Ramírez</div>
+            <div style="color:var(--gray-text)">Administrador</div>
+        </div>
+        <div class="avatar">JR</div>
     </div>
-  </div>
-</div>
 
-<!-- Modal: Modificar Plaza -->
-<div class="modal-overlay" id="modal-mod-plaza">
-  <div class="modal">
-    <div class="modal-header">Modificar Plaza</div>
-    <div class="modal-body">
-      <div class="modal-field"><label>Código</label><div class="code-val">PL-01024</div></div>
-      <div class="modal-field"><label>Nombre</label><input type="text" placeholder="" /></div>
-      <div class="modal-field"><label>Tipo</label><select><option>Tienda</option><option>Bar</option><option>Supermercado</option><option>Restaurante</option></select></div>
-      <div class="modal-field"><label>Ubicación</label><select><option>Los Olivos</option><option>Miraflores</option><option>Surco</option><option>San Isidro</option></select></div>
-      <div class="modal-field"><label>Estado</label><select><option>Activo</option><option>Inactivo</option><option>En revisión</option></select></div>
-      <div class="modal-field"><label>Descripción</label><textarea></textarea></div>
-      <div class="btn-row center">
-        <button class="btn btn-gray" onclick="closeModal('modal-mod-plaza')">Cancelar</button>
-        <button class="btn btn-red" onclick="closeModal('modal-mod-plaza')">Eliminar</button>
-        <button class="btn btn-green" onclick="closeModal('modal-mod-plaza')">Guardar</button>
-      </div>
+    <div class="container">
+        <div style="margin-bottom:20px;">
+            <h1 style="font-size:24px; margin-bottom:8px;">Desarrollo de investigación de mercado</h1>
+            <p style="font-size:13px; color:var(--gray-text); max-width:760px;">Registre preguntas y respuestas de encuestas, genere vista previa del reporte y descargue el documento final en PDF.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-hdr">Configuración General (Metadatos)</div>
+            <div class="card-body">
+                <div class="field-grid">
+                    <div class="field"><input id="survey-code" type="text" placeholder="Código de encuesta" readonly value="IM-00023"></div>
+                    <div class="field">
+                        <select id="survey-method" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa;">
+                            <option value="">Selecciona metodología</option>
+                            <option value="Encuesta" selected>Encuesta</option>
+                            <option value="Focus Group">Focus Group</option>
+                            <option value="Entrevista">Entrevista</option>
+                            <option value="Observación">Observación</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field-grid">
+                    <div class="field">
+                        <select id="survey-channel" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa;">
+                            <option value="">Selecciona canal</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Instagram" selected>Instagram</option>
+                            <option value="Correo electrónico">Correo electrónico</option>
+                            <option value="Telegram">Telegram</option>
+                            <option value="Presencial">Presencial</option>
+                        </select>
+                    </div>
+                    <div class="field"><input id="start-date" type="date" value="2025-04-13"></div>
+                </div>
+                <div style="margin-top:15px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--gray-text); margin-bottom:5px; display:block;">Objetivo de la Investigación</label>
+                    <textarea id="research-objective" rows="3" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa; resize:vertical;" placeholder="Describa el propósito del estudio...">Evaluar la percepción de la marca Heineken en el segmento de 18 a 35 años en Lima Metropolitana para el segundo trimestre de 2025.</textarea>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+                    <button class="btn btn-outline" onclick="generateSurveyCode()">Generar ID único</button>
+                    <button class="btn btn-outline" onclick="saveSurveyStructure()">Guardar estructura</button>
+                </div>
+                <div id="a1" class="alert-success">✓ Las preguntas y respuestas han sido registradas exitosamente en el sistema.</div>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+            <div class="card">
+                <div class="card-hdr">Módulo: Registro de Preguntas</div>
+                <div class="card-body">
+                    <div id="preguntas-area">
+                        <div class="field" style="margin-bottom:10px;"><input type="text" placeholder="Pregunta 1: Ingrese pregunta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><input type="text" placeholder="Pregunta 2: Ingrese pregunta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><input type="text" placeholder="Pregunta 3: Ingrese pregunta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><input type="text" placeholder="Pregunta 4: Ingrese pregunta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><input type="text" placeholder="Pregunta 5: Ingrese pregunta..."></div>
+                    </div>
+                    <div style="margin-top:10px;">
+                        <button class="btn btn-outline" onclick="addQuestion()">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-hdr">Módulo: Registro de Respuestas</div>
+                <div class="card-body">
+                    <div class="field" style="margin-bottom:15px;">
+                        <select id="saved-surveys" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa;">
+                            <option value="">Seleccione encuesta activa</option>
+                        </select>
+                    </div>
+                    <div id="responses-area">
+                        <div class="field" style="margin-bottom:10px;"><label>P01:</label> <input type="text" placeholder="Respuesta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><label>P02:</label> <input type="text" placeholder="Respuesta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><label>P03:</label> <input type="text" placeholder="Respuesta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><label>P04:</label> <input type="text" placeholder="Respuesta..."></div>
+                        <div class="field" style="margin-bottom:10px;"><label>P05:</label> <input type="text" placeholder="Respuesta..."></div>
+                    </div>
+                    <div style="margin-top:10px;">
+                        <button class="btn btn-outline" onclick="addResponse()">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+            <div class="card">
+                <div class="card-hdr">Hallazgos del Sistema (Entrada Cualitativa)</div>
+                <div class="card-body">
+                    <div class="field" style="margin-bottom:15px;">
+                        <label style="font-size:12px; font-weight:700; color:var(--gray-text); margin-bottom:5px; display:block;">Hallazgo Principal</label>
+                        <textarea rows="2" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa;" placeholder="Describa el descubrimiento más relevante..."></textarea>
+                    </div>
+                    <div class="field" style="margin-bottom:15px;">
+                        <label style="font-size:12px; font-weight:700; color:var(--gray-text); margin-bottom:5px; display:block;">Conclusión</label>
+                        <textarea rows="2" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa;" placeholder="Síntesis estratégica de la investigación..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label style="font-size:12px; font-weight:700; color:var(--gray-text); margin-bottom:5px; display:block;">Recomendación</label>
+                        <textarea rows="2" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa;" placeholder="Sugerencias basadas en la evidencia..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-hdr">Métricas Consolidadas y Almacenamiento (Entrada Cuantitativa)</div>
+                <div class="card-body">
+                    <div style="margin-bottom:15px;">
+                        <div style="font-size:12px; font-weight:700; color:var(--gray-text); margin-bottom:10px;">Indicadores Clave</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:13px;">
+                            <div><strong>Total encuestas:</strong> 118</div>
+                            <div><strong>Tasa respuesta:</strong> 12.9%</div>
+                            <div><strong>Segmento etario:</strong> 25-34 años</div>
+                            <div><strong>Canal efectivo:</strong> Instagram</div>
+                            <div><strong>NPS estimado:</strong> 72</div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label style="font-size:12px; font-weight:700; color:var(--gray-text); margin-bottom:5px; display:block;">Guardar en:</label>
+                        <select style="width:100%; padding:10px; border:1px solid var(--border); border-radius:4px; font-family:inherit; font-size:13px; background:#fafafa;">
+                            <option value="db-marketing">DB Marketing + PDF</option>
+                            <option value="db-only">Solo DB Marketing</option>
+                            <option value="pdf-only">Solo PDF</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-hdr" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Estado de Validación y Acciones Finales</span>
+                <span style="background:#fff4e5; color:#b35e00; padding:2px 6px; border-radius:3px; font-size:11px;">Pendiente Validación</span>
+            </div>
+            <div class="card-body">
+                <div id="a2" class="alert-success" style="display:block;">✓ Los registros se han subido exitosamente. La base de datos ha sido actualizada con la nueva inteligencia de mercado.</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
+                    <button class="btn btn-outline" onclick="saveDraft()">Guardar borrador</button>
+                    <button class="btn btn-success" onclick="generateAndValidate()">Generar y validar resultados</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="preview-card" style="display:none;">
+            <div class="card-hdr">Vista previa del reporte</div>
+            <div class="card-body">
+                <div id="preview-content" class="preview-box"></div>
+            </div>
+        </div>
+
+        <div class="card" id="salidas" style="display:none;">
+            <div class="card-hdr" style="background:var(--green-brand); color:white;">
+                <span>Salidas de Datos y Cierre del Proceso</span>
+                <span style="background:white; color:var(--green-brand); padding:2px 6px; border-radius:3px;">COMPLETADO</span>
+            </div>
+            <div class="card-body">
+                <div class="outputs">
+                    <div class="out-box">
+                        <div class="out-title">Documento de Resultados</div>
+                        <div class="out-text">El reporte estratégico ha sido generado.</div>
+                        <button class="btn btn-success" style="font-size:10px;" onclick="downloadPDF()">Descargar PDF</button>
+                    </div>
+                    <div class="out-box">
+                        <div class="out-title">DB Marketing</div>
+                        <div class="out-text">Información actualizada con éxito.</div>
+                        <button class="btn btn-outline" style="font-size:10px;">Ver registros</button>
+                    </div>
+                </div>
+                <div style="margin-top:20px; display:flex; align-items:center; justify-content:space-between; background:var(--green-light); padding:12px 20px;">
+                    <div style="font-size:12px; color:var(--green-dark);">Proceso completado. Puede descargar el documento final o revisar los resultados guardados.</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- Modal: Eliminar Plaza (Conforme?) -->
-<div class="modal-overlay" id="modal-elim-plaza">
-  <div class="modal">
-    <div class="modal-header">Eliminar Plaza</div>
-    <div class="modal-body" style="text-align:center;">
-      <p style="font-size:20px;font-weight:700;color:#333;margin-bottom:18px;">¿Conforme?</p>
-      <p style="font-size:13px;color:#666;margin-bottom:20px;">Esta acción eliminará la plaza seleccionada del sistema.</p>
-      <div class="conforme-btns">
-        <button class="btn-si" onclick="closeModal('modal-elim-plaza')">Si</button>
-        <button class="btn-no" onclick="closeModal('modal-elim-plaza')">No</button>
-      </div>
-    </div>
-  </div>
-</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const savedSurveys = [];
+        let currentSurveyCode = '';
 
-<script>
-  function showTab(tab) {
-    document.querySelectorAll('.view').forEach(v => {
-      if (!v.closest('.panel-grid') && !v.id.startsWith('prog-')) v.classList.remove('active');
-    });
-    document.getElementById('view-' + tab).classList.add('active');
-    ['btn-inv','btn-meta','btn-prog'].forEach(b => document.getElementById(b).className = 'subnav-btn inactive');
-    const map = {investigacion:'btn-inv', mercadometa:'btn-meta', programacion:'btn-prog'};
-    document.getElementById(map[tab]).className = 'subnav-btn active';
-  }
+        function generateSurveyCode() {
+            const field = document.getElementById('survey-code');
+            const code = `INV-${Date.now().toString().slice(-8)}`;
+            field.value = code;
+        }
 
-  function showProgTab(tab) {
-    document.getElementById('prog-productos').classList.remove('active');
-    document.getElementById('prog-plazas').classList.remove('active');
-    document.getElementById('prog-' + tab).classList.add('active');
-    document.getElementById('prog-tab-prod').className = 'btn ' + (tab === 'productos' ? 'btn-green' : 'btn-outline');
-    document.getElementById('prog-tab-plazas').className = 'btn ' + (tab === 'plazas' ? 'btn-green' : 'btn-outline');
-  }
+        function addItem() {
+            const area = document.getElementById('preguntas-area');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'field-grid';
+            wrapper.innerHTML = `
+                <div class="field"><input type="text" placeholder="Ingrese descripción de la pregunta"></div>
+                <div class="field"><input type="text" placeholder="Ingrese respuesta"></div>
+            `;
+            area.appendChild(wrapper);
+        }
 
-  function openModal(id) { document.getElementById(id).classList.add('open'); }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+        function getSurveyInfo() {
+            return {
+                code: document.getElementById('survey-code').value.trim(),
+                method: document.getElementById('survey-method').value,
+                channel: document.getElementById('survey-channel').value,
+                startDate: document.getElementById('start-date').value,
+                objective: document.getElementById('research-objective').value.trim(),
+                respondent: document.getElementById('respondent-name').value.trim(),
+                contact: document.getElementById('respondent-contact').value.trim(),
+            };
+        }
 
-  document.querySelectorAll('.modal-overlay').forEach(m => {
-    m.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
-  });
+        function isSurveyMetadataValid(info) {
+            return info.code !== '' && info.method !== '' && info.channel !== '' && info.startDate !== '' && info.objective !== '';
+        }
 
-  function switchModule(m) {
-    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-  }
-</script>
+        function addQuestion() {
+            const area = document.getElementById('preguntas-area');
+            const questionCount = area.children.length + 1;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'field';
+            wrapper.style.marginBottom = '10px';
+            wrapper.innerHTML = `<input type="text" placeholder="Pregunta ${questionCount}: Ingrese pregunta...">`;
+            area.appendChild(wrapper);
+        }
+
+        function addResponse() {
+            const area = document.getElementById('responses-area');
+            const responseCount = area.children.length + 1;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'field';
+            wrapper.style.marginBottom = '10px';
+            wrapper.innerHTML = `<label>P${String(responseCount).padStart(2, '0')}:</label> <input type="text" placeholder="Respuesta...">`;
+            area.appendChild(wrapper);
+        }
+
+        function saveDraft() {
+            const info = getSurveyInfo();
+            const questions = getQuestionData();
+            const draft = { ...info, questions, status: 'draft', savedAt: new Date().toISOString() };
+            localStorage.setItem('survey-draft', JSON.stringify(draft));
+            alert('Borrador guardado exitosamente.');
+        }
+
+        function generateAndValidate() {
+            const saved = saveSurveyStructure();
+            if (saved) {
+                document.getElementById('salidas').style.display = 'block';
+                alert('Resultados generados y validados exitosamente.');
+            }
+        }
+
+        function getQuestionData() {
+            return Array.from(document.querySelectorAll('#preguntas-area .field input')).map(input => input.value.trim()).filter(q => q !== '');
+        }
+
+        function getResponseData() {
+            const responses = [];
+            const responseFields = document.querySelectorAll('#responses-area .field');
+            responseFields.forEach((field, index) => {
+                const label = field.querySelector('label').textContent.replace(':', '');
+                const input = field.querySelector('input');
+                if (input && input.value.trim()) {
+                    responses.push({ code: label, question: input.value.trim() });
+                }
+            });
+            return responses;
+        }
+
+        function renderQuestionFields(questions) {
+            const area = document.getElementById('preguntas-area');
+            area.innerHTML = '';
+            questions.forEach((question, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'field';
+                wrapper.style.marginBottom = '10px';
+                wrapper.innerHTML = `<input type="text" value="${question}" placeholder="Pregunta ${index + 1}: Ingrese pregunta...">`;
+                area.appendChild(wrapper);
+            });
+            if (questions.length === 0) {
+                addQuestion();
+            }
+        }
+
+        function renderResponseFields(responses) {
+            const area = document.getElementById('responses-area');
+            area.innerHTML = '';
+            responses.forEach((response, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'field';
+                wrapper.style.marginBottom = '10px';
+                wrapper.innerHTML = `<label>P${String(index + 1).padStart(2, '0')}:</label> <input type="text" value="${response.question || ''}" placeholder="Respuesta...">`;
+                area.appendChild(wrapper);
+            });
+        }
+
+        function saveSurveyStructure() {
+            const warning = document.getElementById('a1');
+            const info = getSurveyInfo();
+            const questions = getQuestionData();
+            const responses = getResponseData();
+
+            if (!isSurveyMetadataValid(info) || questions.length === 0 || responses.length === 0) {
+                warning.textContent = '⚠️ Complete todos los campos de metadatos, al menos una pregunta y una respuesta antes de guardar la estructura.';
+                warning.style.display = 'block';
+                warning.style.background = '#fff4e5';
+                warning.style.borderColor = '#ffb547';
+                warning.style.color = '#b35e00';
+                return false;
+            }
+
+            const survey = {
+                ...info,
+                questions,
+                updatedAt: new Date().toISOString(),
+                responses: getResponseData()
+            };
+
+            const existing = savedSurveys.find(item => item.code === survey.code);
+            if (existing) {
+                Object.assign(existing, survey);
+                warning.textContent = `✓ La encuesta ${survey.code} ha sido actualizada y está lista para ejecución.`;
+            } else {
+                savedSurveys.push(survey);
+                warning.textContent = `✓ La encuesta ${survey.code} ha sido guardada exitosamente en el sistema.`;
+            }
+
+            warning.style.display = 'block';
+            warning.style.background = 'var(--green-light)';
+            warning.style.borderColor = 'var(--green-brand)';
+            warning.style.color = 'var(--green-brand)';
+            currentSurveyCode = survey.code;
+            populateSurveyList();
+            renderSyncArea(survey);
+            return true;
+        }
+
+        function loadSurvey() {
+            const select = document.getElementById('saved-surveys');
+            const code = select.value;
+            const warning = document.getElementById('a1');
+
+            if (!code) {
+                warning.textContent = '⚠️ Seleccione una encuesta activa para cargar.';
+                warning.style.display = 'block';
+                warning.style.background = '#fff4e5';
+                warning.style.borderColor = '#ffb547';
+                warning.style.color = '#b35e00';
+                return;
+            }
+
+            const survey = savedSurveys.find(item => item.code === code);
+            if (!survey) {
+                warning.textContent = '⚠️ No se encontró la encuesta seleccionada.';
+                warning.style.display = 'block';
+                return;
+            }
+
+            document.getElementById('survey-code').value = survey.code;
+            document.getElementById('survey-method').value = survey.method;
+            document.getElementById('survey-channel').value = survey.channel;
+            document.getElementById('survey-title').value = survey.title;
+            document.getElementById('start-date').value = survey.startDate;
+            document.getElementById('survey-objective').value = survey.objective;
+            renderQuestionFields(survey.questions);
+            renderResponseFields(survey.responses);
+            currentSurveyCode = survey.code;
+            renderSyncArea(survey);
+            warning.textContent = `✓ Encuesta ${survey.code} cargada con éxito. Puede editar los campos y guardar.`;
+            warning.style.display = 'block';
+            warning.style.background = 'var(--green-light)';
+            warning.style.borderColor = 'var(--green-brand)';
+            warning.style.color = 'var(--green-brand)';
+        }
+
+        function renderSyncArea(survey) {
+            const area = document.getElementById('sync-area');
+            area.style.display = 'block';
+            const lines = [
+                `Encuesta activa: ${survey.title}`,
+                `Código: ${survey.code}`,
+                `Metodología: ${survey.method}`,
+                `Canal: ${survey.channel}`,
+                `Última actualización: ${new Date(survey.updatedAt).toLocaleString()}`,
+                '',
+                'Preguntas registradas:'
+            ];
+            if (survey.questions.length === 0) {
+                lines.push('No hay preguntas registradas aún.');
+            } else {
+                survey.questions.forEach((q, index) => {
+                    lines.push(`P${String(index + 1).padStart(2, '0')}: ${q.question}`);
+                });
+            }
+            lines.push('');
+            lines.push('Respuestas sincronizadas:');
+            if (survey.responses.length === 0) {
+                lines.push('No hay respuestas sincronizadas aún.');
+            } else {
+                survey.responses.forEach(response => {
+                    lines.push(`${response.code}: ${response.question}`);
+                });
+            }
+            area.textContent = lines.join('\n');
+        }
+
+        function prepareReport() {
+            const a2 = document.getElementById('a2');
+            const saved = generateAndValidate();
+            if (!saved) {
+                a2.textContent = '⚠️ Complete todos los datos y valide la estructura antes de procesar el reporte.';
+                a2.style.display = 'block';
+                a2.style.background = '#fff4e5';
+                a2.style.borderColor = '#ffb547';
+                a2.style.color = '#b35e00';
+                return;
+            }
+
+            a2.textContent = '✓ Información de encuestas validada. El sistema está listo para la vista previa y descarga del reporte.';
+            a2.style.display = 'block';
+            a2.style.background = 'var(--green-light)';
+            a2.style.borderColor = 'var(--green-brand)';
+            a2.style.color = 'var(--green-brand)';
+            document.getElementById('preview-button').style.display = 'inline-flex';
+            document.getElementById('download-button').style.display = 'inline-flex';
+            document.getElementById('salidas').style.display = 'block';
+            generatePreviewContent();
+        }
+
+        function generatePreviewContent() {
+            const surveyInfo = getSurveyInfo();
+            const questions = getQuestionData();
+            const responses = getResponseData();
+            const lines = [
+                `Título: ${surveyInfo.title}`,
+                `Código de encuesta: ${surveyInfo.code}`,
+                `Metodología: ${surveyInfo.method}`,
+                `Canal: ${surveyInfo.channel}`,
+                `Fecha Inicio: ${surveyInfo.startDate}`,
+                `Objetivo: ${surveyInfo.objective}`,
+                '',
+                'Preguntas registradas:',
+                ''
+            ];
+            questions.forEach((q, index) => {
+                lines.push(`P${String(index + 1).padStart(2, '0')}: ${q.question}`);
+            });
+            lines.push('');
+            lines.push('Respuestas registradas:');
+            lines.push('');
+            responses.forEach((r, index) => {
+                lines.push(`${r.code}: ${r.question}`);
+            });
+            lines.push('');
+            lines.push('Estado: Información procesada y lista para descarga.');
+            document.getElementById('preview-content').textContent = lines.join('\n');
+        }
+
+        function previewReport() {
+            document.getElementById('preview-card').style.display = 'block';
+        }
+
+        function downloadPDF() {
+            const surveyInfo = getSurveyInfo();
+            const questions = getQuestionData();
+            const responses = getResponseData();
+            const textLines = [
+                `Título: ${surveyInfo.title}`,
+                `Código de encuesta: ${surveyInfo.code}`,
+                `Metodología: ${surveyInfo.method}`,
+                `Canal: ${surveyInfo.channel}`,
+                `Fecha Inicio: ${surveyInfo.startDate}`,
+                `Objetivo: ${surveyInfo.objective}`,
+                '',
+                'Preguntas registradas:',
+                ''
+            ];
+            questions.forEach((q, index) => {
+                textLines.push(`P${String(index + 1).padStart(2, '0')}: ${q.question}`);
+            });
+            textLines.push('');
+            textLines.push('Respuestas registradas:');
+            textLines.push('');
+            responses.forEach((r, index) => {
+                textLines.push(`${r.code}: ${r.question}`);
+            });
+            const doc = new window.jspdf.jsPDF();
+            let y = 20;
+            textLines.forEach(line => {
+                doc.text(line, 14, y);
+                y += 8;
+                if (y > 280) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+            doc.save('reporte-mercadeo.pdf');
+        }
+    </script>
 </body>
 </html>
